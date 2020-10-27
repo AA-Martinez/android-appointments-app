@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Consultas Medicas</string>
+    <string name="hint_username">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="button_next">Siguiente</string>
+    <string name="button_register">Crear cuenta</string>
+    <string name="button_log">Iniciar sesion</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="error_password">La contraseña debe tener mas de 8 caracteres.</string>
+</resources>
