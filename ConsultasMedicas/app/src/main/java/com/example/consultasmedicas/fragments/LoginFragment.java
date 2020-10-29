@@ -32,7 +32,7 @@ public class LoginFragment extends Fragment {
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Navigation) getActivity()).navigateTo(new RegisterFragment(), false);
+                ((Navigation) getActivity()).navigateTo(new RegisterFragment(), true);
             }
         });
 

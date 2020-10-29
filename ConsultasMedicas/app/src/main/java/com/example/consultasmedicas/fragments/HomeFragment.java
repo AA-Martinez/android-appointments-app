@@ -42,19 +42,14 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         navigationView = view.findViewById(R.id.navigation_view);
         nav_menu = view.findViewById(R.id.nav_menu_button);
 
-
         navigationDrawer();
-
-
-
-
         return view;
     }
 
     private void navigationDrawer() {
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.home1);
+        navigationView.setCheckedItem(R.id.home);
 
         nav_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +67,23 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
 
         int id = item.getItemId();
 
-        if (id == R.id.home1){
-            ((Navigation) getActivity()).navigateTo(new ProfileFragment(), false);
+        if (id == R.id.home){
+            ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (id == R.id.my_account){
+            ((Navigation) getActivity()).navigateTo(new ProfileFragment(), true);
+            drawerLayout.closeDrawer(GravityCompat.START);
         }
+        /*else if (id == R.id.create_cons){
+            ((Navigation) getActivity()).navigateTo(new CreateConsultFragment(), true);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.home){
+            ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.home){
+            ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }*/
 
 
 

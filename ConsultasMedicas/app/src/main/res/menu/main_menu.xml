@@ -3,18 +3,28 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/home1"
+            android:id="@+id/home"
             android:title="Inicio"
             android:icon="@drawable/ic_baseline_home_24"/>
 
         <item
-            android:id="@+id/home2"
+            android:id="@+id/my_account"
+            android:title="Mi cuenta"
+            android:icon="@drawable/ic_baseline_home_24"/>
+
+        <item
+            android:id="@+id/create_cons"
+            android:title="Crear Consulta"
+            android:icon="@drawable/ic_baseline_home_24"/>
+
+        <item
+            android:id="@+id/my_consul"
             android:title="Mis consultas"
             android:icon="@drawable/ic_baseline_home_24"/>
 
         <item
-            android:id="@+id/home3"
-            android:title="Crear consultas"
+            android:id="@+id/medics"
+            android:title="Medicos"
             android:icon="@drawable/ic_baseline_home_24"/>
 
     </group>
@@ -25,6 +35,11 @@
                 <item
                     android:id="@+id/config"
                     android:title="Configuraciones"
+                    android:icon="@drawable/ic_baseline_home_24"/>
+
+                <item
+                    android:id="@+id/about_us"
+                    android:title="Sobre nosotros"
                     android:icon="@drawable/ic_baseline_home_24"/>
             </group>
         </menu>
