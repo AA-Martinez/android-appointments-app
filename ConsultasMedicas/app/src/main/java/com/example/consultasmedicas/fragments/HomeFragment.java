@@ -74,10 +74,10 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             ((Navigation) getActivity()).navigateTo(new ProfileFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-        /*else if (id == R.id.create_cons){
-            ((Navigation) getActivity()).navigateTo(new CreateConsultFragment(), true);
+        else if (id == R.id.medics){
+            ((Navigation) getActivity()).navigateTo(new MedicsFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else if (id == R.id.home){
+        }/*else if (id == R.id.home){
             ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }else if (id == R.id.home){

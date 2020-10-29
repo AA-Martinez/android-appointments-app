@@ -1,9 +1,5 @@
 package com.example.consultasmedicas.fragments;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
@@ -20,17 +19,16 @@ import com.example.consultasmedicas.fragments.profileConfig.GeneralInformationFr
 import com.example.consultasmedicas.fragments.profileConfig.MedicationsFragment;
 import com.example.consultasmedicas.fragments.profileConfig.SubstancesFragment;
 
-public class ProfileFragment extends Fragment{
-
+public class MedicsFragment extends Fragment {
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        View view1 = inflater.inflate(R.layout.profile_screen, container, false);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.medics_fragment, container, false);
 
-        final ListView listView = view1.findViewById(R.id.profile_listview);
+        final ListView listView = view.findViewById(R.id.listview_medics);
 
         String[] values = new String[]{
-                "Informacion general", "Enfermedades", "Mediciones actuales", "Alergias", "Substancias"
+                "Dr. Edmundo Calisaya"
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
@@ -41,20 +39,14 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0){
-                    ((Navigation) getActivity()).navigateTo(new GeneralInformationFragment(), true);
-                }else if (i == 1){
-                    ((Navigation) getActivity()).navigateTo(new DiseaseFragment(), true);
-                }else if (i == 2){
-                    ((Navigation) getActivity()).navigateTo(new MedicationsFragment(), true);
-                }else if (i == 3){
-                    ((Navigation) getActivity()).navigateTo(new AllergyFragment(), true);
-                }else if (i == 4){
-                    ((Navigation) getActivity()).navigateTo(new SubstancesFragment(), true);
+                    ((Navigation) getActivity()).navigateTo(new MedicPersonalInformationFragment(), true);
                 }
             }
         });
 
-        return view1;
+
+
+        return view;
     }
 
 }
