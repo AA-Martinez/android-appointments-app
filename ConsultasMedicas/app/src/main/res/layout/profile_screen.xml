@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/colorAccent"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/profile_id"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_baseline_account_circle_24"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="20sp"
+                android:includeFontPadding="false"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/profile_id"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:includeFontPadding="false"
+                android:textSize="15sp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/profile_name"/>
+
+
+        </RelativeLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_marginTop="-65dp">
+            
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="130dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardElevation="10dp"
+                android:layout_margin="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/profile_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp"
+                        android:layout_centerHorizontal="true"
+                        android:text="prueba@gmail.com"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Calle 6 de Obrajes"
+                        android:textColor="@color/white"
+                        android:id="@+id/profile_address"
+                        android:layout_below="@+id/profile_email"
+                        android:layout_centerInParent="true"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="La Paz - Bolivia"
+                        android:textColor="@color/white"
+                        android:layout_below="@+id/profile_address"
+                        android:layout_centerInParent="true"
+                        android:textSize="15sp"/>
+
+                </RelativeLayout>
+                
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/profile_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+
+
+
+</ScrollView>

@@ -1,4 +1,4 @@
-package com.example.consultasmedicas;
+package com.example.consultasmedicas.fragments;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.consultasmedicas.Navigation;
+import com.example.consultasmedicas.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,7 +35,7 @@ public class LoginFragment extends Fragment {
                     passwordTextInput.setError(getString(R.string.error_password));
                 } else {
                     passwordTextInput.setError(null);
-                    ((Navigation) getActivity()).navigateTo(new MainMenuFragment(), false);
+                    ((Navigation) getActivity()).navigateTo(new HomeFragment(), false);
                 }
             }
         });

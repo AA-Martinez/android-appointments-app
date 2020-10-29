@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/loginPageBackgroundColor"
-    tools:context=".LoginFragment">
+    tools:context=".fragments.LoginFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,8 +16,13 @@
         android:padding="24dp"
         android:paddingTop="16dp">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"/>
 
-        <!-- Snippet from "Add text fields" section goes here. -->
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.App.TextInputLayout"
