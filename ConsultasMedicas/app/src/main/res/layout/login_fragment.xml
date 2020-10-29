@@ -20,10 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/logo"/>
-
-
-
-
+        
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
@@ -53,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
-
         <!-- Snippet from "Add buttons" section goes here. -->
 
         <RelativeLayout
