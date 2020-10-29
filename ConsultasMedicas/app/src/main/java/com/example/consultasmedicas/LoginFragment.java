@@ -25,6 +25,14 @@ public class LoginFragment extends Fragment {
         final TextInputLayout passwordTextInput = view.findViewById(R.id.password_text_input);
         final TextInputEditText passwordEditText = view.findViewById(R.id.password_edit_text);
         MaterialButton logButton = view.findViewById(R.id.log_button);
+        MaterialButton regButton = view.findViewById(R.id.register_button);
+
+        regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((Navigation) getActivity()).navigateTo(new RegisterFragment(), false);
+            }
+        });
 
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,4 +7,22 @@
     <string name="button_log">Iniciar sesion</string>
     <string name="button_cancel">Cancelar</string>
     <string name="error_password">La contraseña debe tener mas de 8 caracteres.</string>
+
+    <string name="user_ci">CI</string>
+    <string name="user_password">Contraseña</string>
+    <string name="user_name">Nombre</string>
+    <string name="user_lastname">Apellido</string>
+    <string name="user_age">Edad</string>
+    <string name="user_genre">Género</string>
+    <string name="user_email">Correo</string>
+    <string name="user_weight">Peso</string>
+    <string name="user_cellphone">Celular</string>
+    <string name="user_height">Altura</string>
+    <string name="user_address">Dirección</string>
+    <string name="user_city">Ciudad</string>
+    <string name="user_birth">Fecha de nacimiento</string>
+    <string name="helper_birthdate">dd/mm/aaaa</string>
+    <string name="user_nationality">Nacionalidad</string>
+
+
 </resources>
