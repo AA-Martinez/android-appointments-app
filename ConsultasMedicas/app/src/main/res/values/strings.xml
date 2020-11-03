@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Consultas Medicas</string>
+    <string name="register_title">Registro</string>
+    <string name="create_consult_title">Crear consulta</string>
     <string name="hint_username">Usuario</string>
     <string name="hint_password">Contraseña</string>
     <string name="hint_confirm_pass">Confirmar contraseña</string>
@@ -26,5 +28,6 @@
     <string name="helper_birthdate">dd/mm/aaaa</string>
     <string name="user_nationality">Nacionalidad</string>
 
-
+    <string name="hint_symptom">Escriba sus síntomas</string>
+    <string name="symptom_title">Síntomas</string>
 </resources>
