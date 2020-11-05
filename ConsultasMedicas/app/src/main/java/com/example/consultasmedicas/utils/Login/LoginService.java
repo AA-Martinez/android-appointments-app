@@ -8,6 +8,6 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
-    @POST("appUser/login/")
-    Call<AppUser>login(@Body AppUser appUser);
+    @POST("/login")
+    Call<Void>login(@Body AppUser appUser);
 }

@@ -1,5 +1,7 @@
 package com.example.consultasmedicas.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,13 +31,15 @@ import com.google.android.material.textfield.TextInputLayout;
 public class LoginFragment extends Fragment {
 
     LoginService loginService = Apis.loginUserService();
+    TextInputLayout passwordTextInput;
+
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
 
         final TextInputEditText appUserEditText = view.findViewById(R.id.app_user_edit_text);
-        final TextInputLayout passwordTextInput = view.findViewById(R.id.password_text_input);
+        passwordTextInput = view.findViewById(R.id.password_text_input);
         final TextInputEditText passwordEditText = view.findViewById(R.id.password_edit_text);
 
         MaterialButton logButton = view.findViewById(R.id.log_button);
@@ -55,10 +60,8 @@ public class LoginFragment extends Fragment {
                     appUser.setUsername(appUserEditText.getText().toString());
                     appUser.setPassword(passwordEditText.getText().toString());
 
-                    autenticarUsuario(appUser);
+                    authUser(appUser, view);
 
-                    passwordTextInput.setError(null);
-                    ((Navigation) getActivity()).navigateTo(new HomeFragment(), false);
 
             }
         });
@@ -69,20 +72,35 @@ public class LoginFragment extends Fragment {
     }
 
 
-    public void autenticarUsuario(AppUser appUser){
-        Log.d("tag",appUser.getUsername()+" "+ appUser.getPassword());
-        Call<AppUser> call = loginService.login(appUser);
-        call.enqueue(new Callback<AppUser>() {
+    public void authUser(AppUser appUser, View view){
+        Call<Void> call = loginService.login(appUser);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<AppUser> call, Response<AppUser> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
                     Headers headers = response.headers();
-                    Log.d("tag","AUTH: "+headers.get("Authorization"));
+                    SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("auth-token", headers.get("Authorization"));
+                    editor.apply();
+
+                    Log.e("hfsp", sharedPreferences.getString("auth-token", ""));
+
+                    Toast.makeText(view.getContext(), "Login correcto", Toast.LENGTH_SHORT).show();
+                    passwordTextInput.setError(null);
+                    ((Navigation) getActivity()).navigateTo(new HomeFragment(), false);
+
+                }else{
+                    Toast.makeText(view.getContext(), "Login incorrecto", Toast.LENGTH_SHORT).show();
+                    passwordTextInput.setError(getString(R.string.error_password));
+                }
             }
 
             @Override
-            public void onFailure(Call<AppUser> call, Throwable t) {
-                    Log.e("tag",t.getMessage());
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Error", t.getMessage());
             }
         });
+
     }
 }
