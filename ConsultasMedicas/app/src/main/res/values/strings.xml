@@ -18,14 +18,14 @@
     <string name="user_lastname">Apellido</string>
     <string name="user_age">Edad</string>
     <string name="user_genre">Género</string>
-    <string name="user_email">Correo</string>
+    <string name="user_email">Correo electrónico</string>
     <string name="user_weight">Peso</string>
     <string name="user_cellphone">Celular</string>
     <string name="user_height">Altura</string>
     <string name="user_address">Dirección</string>
     <string name="user_city">Ciudad</string>
     <string name="user_birth">Fecha de nacimiento</string>
-    <string name="helper_birthdate">dd/mm/aaaa</string>
+    <string name="helper_birthdate">aaaa-mm-dd</string>
     <string name="user_nationality">Nacionalidad</string>
 
     <string name="hint_symptom">Escriba sus síntomas</string>

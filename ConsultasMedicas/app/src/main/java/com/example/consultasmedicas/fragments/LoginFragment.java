@@ -15,18 +15,15 @@ import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Header;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.AppUser;
 import com.example.consultasmedicas.utils.Apis;
-import com.example.consultasmedicas.utils.LoginService;
+import com.example.consultasmedicas.utils.Login.LoginService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.List;
 
 public class LoginFragment extends Fragment {
 
@@ -53,9 +50,7 @@ public class LoginFragment extends Fragment {
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isPasswordValid(passwordEditText.getText())) {
-                    passwordTextInput.setError(getString(R.string.error_password));
-                } else {
+
                     AppUser appUser = new AppUser();
                     appUser.setUsername(appUserEditText.getText().toString());
                     appUser.setPassword(passwordEditText.getText().toString());
@@ -64,27 +59,15 @@ public class LoginFragment extends Fragment {
 
                     passwordTextInput.setError(null);
                     ((Navigation) getActivity()).navigateTo(new HomeFragment(), false);
-                }
+
             }
         });
 
-        passwordEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (isPasswordValid(passwordEditText.getText())) {
-                    passwordTextInput.setError(null);
-                }
-                return false;
-            }
-        });
 
         return view;
 
     }
 
-    private boolean isPasswordValid(@Nullable Editable text) {
-        return text != null && text.length() >= 8;
-    }
 
     public void autenticarUsuario(AppUser appUser){
         Log.d("tag",appUser.getUsername()+" "+ appUser.getPassword());

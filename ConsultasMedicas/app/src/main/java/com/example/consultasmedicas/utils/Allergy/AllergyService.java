@@ -1,4 +1,4 @@
-package com.example.consultasmedicas.utils;
+package com.example.consultasmedicas.utils.Allergy;
 
 import com.example.consultasmedicas.model.Allergy;
 

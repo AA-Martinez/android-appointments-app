@@ -1,4 +1,4 @@
-package com.example.consultasmedicas.utils;
+package com.example.consultasmedicas.utils.Allergy;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

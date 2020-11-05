@@ -1,4 +1,4 @@
-package com.example.consultasmedicas;
+package com.example.consultasmedicas.utils.Allergy;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.fragments.profileConfig.AllergyFragment;
 import com.example.consultasmedicas.model.Allergy;
 
