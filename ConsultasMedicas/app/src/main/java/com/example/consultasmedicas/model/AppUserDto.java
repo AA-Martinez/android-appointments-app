@@ -1,57 +1,30 @@
-
 package com.example.consultasmedicas.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class AppUser {
-
-    @SerializedName("id")
-    @Expose
-    private int id;
-    @SerializedName("username")
-    @Expose
+public class AppUserDto {
     private String username;
-    @SerializedName("firstName")
-    @Expose
-    private String firstName;
-    @SerializedName("lastName")
-    @Expose
-    private String lastName;
-    @SerializedName("email")
-    @Expose
-    private String email;
-    @SerializedName("genre")
-    @Expose
-    private String genre;
-    @SerializedName("phone")
-    @Expose
-    private String phone;
-    @SerializedName("address")
-    @Expose
-    private String address;
-    @SerializedName("city")
-    @Expose
-    private String city;
-    @SerializedName("birthDate")
-    @Expose
-    private String birthDate;
-    @SerializedName("birthCountry")
-    @Expose
-    private String birthCountry;
-    @SerializedName("ci")
-    @Expose
-    private String ci;
-    @SerializedName("creationTimeStamp")
-    @Expose
-    private String creationTimeStamp;
+    private String password;
+    private String firstName,lastName,email,genre,phone,address,city,birthDate,birthCountry,ci;
 
-    public int getId() {
-        return id;
+    public AppUserDto() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public AppUserDto(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public AppUserDto(String password, String firstName, String lastName, String email, String genre, String phone, String address, String city, String birthDate, String birthCountry, String ci) {
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.genre = genre;
+        this.phone = phone;
+        this.address = address;
+        this.city = city;
+        this.birthDate = birthDate;
+        this.birthCountry = birthCountry;
+        this.ci = ci;
     }
 
     public String getUsername() {
@@ -60,6 +33,14 @@ public class AppUser {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -141,13 +122,4 @@ public class AppUser {
     public void setCi(String ci) {
         this.ci = ci;
     }
-
-    public String getCreationTimeStamp() {
-        return creationTimeStamp;
-    }
-
-    public void setCreationTimeStamp(String creationTimeStamp) {
-        this.creationTimeStamp = creationTimeStamp;
-    }
-
 }

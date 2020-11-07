@@ -1,6 +1,6 @@
 package com.example.consultasmedicas.utils.Login;
 
-import com.example.consultasmedicas.model.AppUser;
+import com.example.consultasmedicas.model.AppUserDto;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -9,5 +9,5 @@ import retrofit2.http.POST;
 public interface LoginService {
 
     @POST("/login")
-    Call<Void>login(@Body AppUser appUser);
+    Call<Void>login(@Body AppUserDto appUserDto);
 }

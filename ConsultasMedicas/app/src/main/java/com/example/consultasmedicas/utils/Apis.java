@@ -16,6 +16,10 @@ public class Apis {
         return RetrofitController.buildRetrofit(URL_001).create(LoginService.class);
     }
 
+    public static PatientService patientService(){
+        return RetrofitController.buildRetrofit(URL_001).create(PatientService.class);
+    }
+
     public static PatientService signUpPatientService(){
         return RetrofitController.buildRetrofit(URL_001).create(PatientService.class);
     }

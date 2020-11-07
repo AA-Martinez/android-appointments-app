@@ -3,16 +3,13 @@ package com.example.consultasmedicas.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import okhttp3.Headers;
 import retrofit2.Call;
@@ -21,7 +18,7 @@ import retrofit2.Response;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.model.AppUser;
+import com.example.consultasmedicas.model.AppUserDto;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Login.LoginService;
 import com.google.android.material.button.MaterialButton;
@@ -56,11 +53,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                    AppUser appUser = new AppUser();
-                    appUser.setUsername(appUserEditText.getText().toString());
-                    appUser.setPassword(passwordEditText.getText().toString());
+                    AppUserDto appUserDto = new AppUserDto();
+                    appUserDto.setUsername(appUserEditText.getText().toString());
+                    appUserDto.setPassword(passwordEditText.getText().toString());
 
-                    authUser(appUser, view);
+                    authUser(appUserDto, view);
 
 
             }
@@ -72,8 +69,8 @@ public class LoginFragment extends Fragment {
     }
 
 
-    public void authUser(AppUser appUser, View view){
-        Call<Void> call = loginService.login(appUser);
+    public void authUser(AppUserDto appUserDto, View view){
+        Call<Void> call = loginService.login(appUserDto);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -92,7 +89,7 @@ public class LoginFragment extends Fragment {
 
                 }else{
                     Toast.makeText(view.getContext(), "Login incorrecto", Toast.LENGTH_SHORT).show();
-                    passwordTextInput.setError(getString(R.string.error_password));
+                    passwordTextInput.setError(getString(R.string.error_password3));
                 }
             }
 
