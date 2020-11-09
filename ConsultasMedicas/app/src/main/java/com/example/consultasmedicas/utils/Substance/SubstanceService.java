@@ -15,6 +15,6 @@ public interface SubstanceService {
     @GET("/substance")
     Call<ResponseBody> getSubstance(@Header("Authorization") String authHeader);
 
-    @POST("/subtance")
+    @POST("/substance")
     Call<ResponseBody> createSubstance(@Body Substance substance, @Header("Authorization") String authHeader);
 }
