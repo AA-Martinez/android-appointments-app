@@ -10,22 +10,22 @@
         <item
             android:id="@+id/my_account"
             android:title="Mi cuenta"
-            android:icon="@drawable/ic_baseline_home_24"/>
+            android:icon="@drawable/ic_baseline_person_24"/>
 
         <item
             android:id="@+id/create_cons"
             android:title="Crear Consulta"
-            android:icon="@drawable/ic_baseline_home_24"/>
+            android:icon="@drawable/ic_baseline_note_add_24"/>
 
         <item
             android:id="@+id/my_consul"
             android:title="Mis consultas"
-            android:icon="@drawable/ic_baseline_home_24"/>
+            android:icon="@drawable/ic_baseline_file_copy_24"/>
 
         <item
             android:id="@+id/medics"
             android:title="Medicos"
-            android:icon="@drawable/ic_baseline_home_24"/>
+            android:icon="@drawable/ic_baseline_groups_24"/>
 
     </group>
 
@@ -35,12 +35,12 @@
                 <item
                     android:id="@+id/config"
                     android:title="Configuraciones"
-                    android:icon="@drawable/ic_baseline_home_24"/>
+                    android:icon="@drawable/ic_baseline_settings_24"/>
 
                 <item
                     android:id="@+id/about_us"
                     android:title="Sobre nosotros"
-                    android:icon="@drawable/ic_baseline_home_24"/>
+                    android:icon="@drawable/ic_baseline_info_24"/>
             </group>
         </menu>
 
