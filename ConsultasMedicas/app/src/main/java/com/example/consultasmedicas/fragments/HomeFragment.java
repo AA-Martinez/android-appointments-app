@@ -17,9 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,19 +25,16 @@ import retrofit2.Response;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.model.AppUser;
-import com.example.consultasmedicas.model.Data;
-import com.example.consultasmedicas.model.Patient;
-import com.example.consultasmedicas.model.RequestResponse;
+import com.example.consultasmedicas.model.Patient.PatientDAO;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Patient.PatientService;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.Key;
 import java.util.Base64;
 
 public class HomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
@@ -84,32 +79,6 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         //String appUserId = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtString).getBody().get("appUserId", String.class);
 
 
-
-        Call<RequestResponse> call = patientService.getPatient("1",(sharedPreferences.getString("auth-token","")));
-
-        call.enqueue(new Callback<RequestResponse>() {
-            @Override
-            public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
-
-                if(response.isSuccessful()){
-                    RequestResponse requestResponse = response.body();
-                    Data patientData = requestResponse.getData();
-                    AppUser appUserData = patientData.getAppUser();
-
-
-                    Log.d("RESPONSE", "onResponse: "+appUserData.getFirstName()+" "+appUserData.getLastName());
-                    //testTextView.setText(patient.getFirstName()+" "+patient.getLastName());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RequestResponse> call, Throwable t) {
-                Log.e("ERROR", "onFailure: "+t.getMessage());
-            }
-        });
-
-
-
         //testTextView.setText("");
 
         drawerLayout = view.findViewById(R.id.drawer_layout);
@@ -121,11 +90,38 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         ciMenuTextView = (TextView) headerView.findViewById(R.id.ciMenu);
         nameMenuTextView = (TextView) headerView.findViewById(R.id.nameMenu);
 
-        ciMenuTextView.setText("5972726 LP");
-        nameMenuTextView.setText("Miguel Martinez");
-
         navigationDrawer();
         decodeJwt();
+
+        Call<ResponseBody> call = patientService.getPatient("1",(sharedPreferences.getString("auth-token","")));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        PatientDAO patientDAO = gson.fromJson(jsonObject.getJSONObject("data").toString(), PatientDAO.class);
+                        Log.d("RESPONSE", "onResponse: "+patientDAO.getAppUser().getFirstName()+" "+patientDAO.getAppUser().getLastName());
+                        ciMenuTextView.setText(patientDAO.getAppUser().getCi());
+                        nameMenuTextView.setText((patientDAO.getAppUser().getFirstName() + " " + patientDAO.getAppUser().getLastName()).toString());
+
+                        //testTextView.setText(patientDAO.getAppUser().getFirstName()+" "+patientDAO.getAppUser().getLastName());
+
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("ERROR", "onFailure: "+t.getMessage());
+
+            }
+        });
+
+
         return view;
     }
 
@@ -133,6 +129,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.home);
+
 
         nav_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +155,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             drawerLayout.closeDrawer(GravityCompat.START);
         }
         else if (id == R.id.medics){
-            ((Navigation) getActivity()).navigateTo(new MedicsFragment(), true);
+            ((Navigation) getActivity()).navigateTo(new DoctorFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }/*else if (id == R.id.home){
             ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);

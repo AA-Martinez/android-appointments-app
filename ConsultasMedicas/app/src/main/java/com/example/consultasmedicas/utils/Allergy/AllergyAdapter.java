@@ -4,45 +4,61 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.fragments.profileConfig.AllergyFragment;
-import com.example.consultasmedicas.model.Allergy;
+import com.example.consultasmedicas.model.Allergy.Allergy;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AllergyAdapter extends ArrayAdapter<Allergy> {
+public class AllergyAdapter extends RecyclerView.Adapter<AllergyAdapter.AllergyViewHolder>{
 
-    private Context context;
-    private List<Allergy> allergies;
+    Context context;
+    List<Allergy> allergyList;
 
-    public AllergyAdapter(@NonNull Context context, int textViewResourceId, @NonNull List<Allergy> objects) {
-        super(context, textViewResourceId, objects);
+    public AllergyAdapter(Context context, List<Allergy> allergyList) {
         this.context = context;
-        this.allergies = objects;
+        this.allergyList = allergyList;
     }
-
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = layoutInflater.inflate(R.layout.listview_item, parent, false);
+    public AllergyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.listview_item, viewGroup, false);
+        return new AllergyViewHolder(v);
+    }
 
-        TextView textViewIdAllergy = (TextView) rowView.findViewById(R.id.id_allergy);
-        TextView textViewAllergyName= (TextView) rowView.findViewById(R.id.allergy_name);
+    @Override
+    public void onBindViewHolder(@NonNull AllergyViewHolder holder, int position) {
+        holder.tvAllergyName.setText(allergyList.get(position).getName());
+        holder.tvAllergyDescription.setText(allergyList.get(position).getDescription());
+    }
 
-        textViewIdAllergy.setText(String.format("ID:%s", allergies.get(position).getId()));
-        textViewAllergyName.setText(String.format("Nombre:%s", allergies.get(position).getName()));
+    @Override
+    public int getItemCount() {
+        return allergyList.size();
+    }
 
-        return rowView;
+    public class AllergyViewHolder extends RecyclerView.ViewHolder{
 
+        TextView tvAllergyName, tvAllergyDescription;
+
+        public AllergyViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvAllergyName = itemView.findViewById(R.id.tvName);
+            tvAllergyDescription = itemView.findViewById(R.id.tvDescription);
+
+        }
+    }
+
+    public void filter(ArrayList<Allergy> filterAllergy){
+        this.allergyList = filterAllergy;
+        notifyDataSetChanged();
 
     }
 }

@@ -1,11 +1,13 @@
 
-package com.example.consultasmedicas.model;
+package com.example.consultasmedicas.model.Patient;
 
 import java.util.List;
+
+import com.example.consultasmedicas.model.AppUser.AppUser;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Data {
+public class PatientDAO {
 
     @SerializedName("id")
     @Expose
@@ -37,6 +39,9 @@ public class Data {
     @SerializedName("substances")
     @Expose
     private List<Object> substances = null;
+    @SerializedName("googleCalendars")
+    @Expose
+    private List<Object> googleCalendars = null;
 
     public int getId() {
         return id;
@@ -116,6 +121,14 @@ public class Data {
 
     public void setSubstances(List<Object> substances) {
         this.substances = substances;
+    }
+
+    public List<Object> getGoogleCalendars() {
+        return googleCalendars;
+    }
+
+    public void setGoogleCalendars(List<Object> googleCalendars) {
+        this.googleCalendars = googleCalendars;
     }
 
 }

@@ -1,4 +1,6 @@
-package com.example.consultasmedicas.model;
+package com.example.consultasmedicas.model.Patient;
+
+import com.example.consultasmedicas.model.AppUser.AppUserDto;
 
 public class Patient extends AppUserDto {
     String weight,height;

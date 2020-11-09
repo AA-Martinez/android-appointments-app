@@ -1,5 +1,5 @@
 
-package com.example.consultasmedicas.model;
+package com.example.consultasmedicas.model.RequestResponse;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -14,7 +14,7 @@ public class RequestResponse {
     private Object statusMessage;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private Object data;
 
     public boolean isSuccess() {
         return success;
@@ -32,11 +32,11 @@ public class RequestResponse {
         this.statusMessage = statusMessage;
     }
 
-    public Data getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

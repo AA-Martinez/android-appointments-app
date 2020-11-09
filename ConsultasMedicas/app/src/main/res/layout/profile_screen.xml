@@ -28,16 +28,15 @@
                 android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
                 android:textSize="20sp"
                 android:includeFontPadding="false"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/profile_id"/>
 
             <TextView
+                android:id="@+id/profile_ci"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
                 android:includeFontPadding="false"
                 android:textSize="15sp"
                 android:layout_centerHorizontal="true"
@@ -60,42 +59,101 @@
                 app:cardElevation="10dp"
                 android:layout_margin="20dp">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="5dp">
 
                     <TextView
                         android:id="@+id/profile_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="23dp"
-                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="4dp"
                         android:text="prueba@gmail.com"
                         android:textColor="@color/white"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.497"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/profile_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="Address"
                         android:text="Calle 6 de Obrajes"
                         android:textColor="@color/white"
-                        android:id="@+id/profile_address"
-                        android:layout_below="@+id/profile_email"
-                        android:layout_centerInParent="true"
-                        android:textSize="15sp"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
                     <TextView
+                        android:id="@+id/profile_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="La Paz - Bolivia"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginLeft="28dp"
+                        android:layout_marginTop="4dp"
+                        android:hint="genre"
+                        android:text="Masculino"
                         android:textColor="@color/white"
-                        android:layout_below="@+id/profile_address"
-                        android:layout_centerInParent="true"
-                        android:textSize="15sp"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_address" />
 
-                </RelativeLayout>
-                
+                    <TextView
+                        android:id="@+id/profile_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="36dp"
+                        android:layout_marginRight="36dp"
+                        android:hint="weight"
+                        android:text="Peso: 65.1"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_address" />
+
+                    <TextView
+                        android:id="@+id/profile_height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="height"
+                        android:text="Altura: 1.73"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toStartOf="@+id/profile_weight"
+                        app:layout_constraintStart_toEndOf="@+id/profile_genre"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_address" />
+
+                    <TextView
+                        android:id="@+id/profile_birthDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Fecha de nacimiento: 1999-30-3"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_height" />
+
+                    <TextView
+                        android:id="@+id/profile_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="La Paz"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_birthDay" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </com.google.android.material.card.MaterialCardView>
 
 

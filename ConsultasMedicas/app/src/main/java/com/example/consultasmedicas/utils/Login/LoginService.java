@@ -1,6 +1,6 @@
 package com.example.consultasmedicas.utils.Login;
 
-import com.example.consultasmedicas.model.AppUserDto;
+import com.example.consultasmedicas.model.AppUser.AppUserDto;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

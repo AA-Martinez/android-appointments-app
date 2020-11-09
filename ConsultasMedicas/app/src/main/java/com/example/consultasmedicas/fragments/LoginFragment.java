@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.model.AppUserDto;
+import com.example.consultasmedicas.model.AppUser.AppUserDto;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Login.LoginService;
 import com.google.android.material.button.MaterialButton;

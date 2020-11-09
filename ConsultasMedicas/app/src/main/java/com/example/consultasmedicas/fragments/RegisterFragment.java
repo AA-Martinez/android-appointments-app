@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.model.Patient;
+import com.example.consultasmedicas.model.Patient.Patient;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Patient.PatientService;
 import com.google.android.material.button.MaterialButton;
@@ -134,6 +134,7 @@ public class RegisterFragment extends Fragment {
                         tilConfirmPass.setError(getString(R.string.error_password2));
                     }
                     else {
+
                         patient.setCi(tietCi.getText().toString());
                         patient.setPassword(tietPassword.getText().toString());
                         patient.setFirstName(tietFirstName.getText().toString());

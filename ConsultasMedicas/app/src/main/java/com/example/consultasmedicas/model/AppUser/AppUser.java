@@ -1,5 +1,5 @@
 
-package com.example.consultasmedicas.model;
+package com.example.consultasmedicas.model.AppUser;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

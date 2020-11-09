@@ -1,9 +1,6 @@
 package com.example.consultasmedicas.utils.Patient;
 
-import com.example.consultasmedicas.model.Patient;
-import com.example.consultasmedicas.model.RequestResponse;
-
-import org.json.JSONObject;
+import com.example.consultasmedicas.model.Patient.Patient;
 
 
 import okhttp3.ResponseBody;
@@ -18,6 +15,6 @@ public interface PatientService {
     @POST("/patient")
     Call<ResponseBody> signUp(@Body Patient patient);
 
-    @GET("/patient/{patientId}")
-    Call<RequestResponse> getPatient(@Path("patientId") String patientId, @Header("Authorization") String authHeader);
+    @GET("/patient/appUser/{appUserId}")
+    Call<ResponseBody> getPatient(@Path("appUserId") String appUserId, @Header("Authorization") String authHeader);
 }

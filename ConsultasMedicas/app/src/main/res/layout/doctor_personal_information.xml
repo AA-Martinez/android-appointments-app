@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragments.MedicPersonalInformationFragment">
+    tools:context=".fragments.DoctorPersonalInformationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_centerHorizontal="true"/>
 
             <TextView
-                android:id="@+id/profile_name"
+                android:id="@+id/profile_doctor_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dr. Edmundo Calisaya"
@@ -38,10 +38,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medico General"
+                android:id="@+id/profile_doctor_Ci"
                 android:includeFontPadding="false"
                 android:textSize="15sp"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/profile_name"/>
+                android:layout_below="@+id/profile_doctor_name"/>
 
 
         </RelativeLayout>
@@ -60,12 +61,61 @@
                 app:cardBackgroundColor="@color/colorPrimary"
                 app:cardElevation="10dp">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <TextView
+                        android:id="@+id/profile_doctor_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="92dp"
+                        android:text="Max@gmail.com"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.497"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/profile_doctor_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="73028931"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_doctor_email" />
+
+                    <TextView
+                        android:id="@+id/profile_doctor_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Miraflores, Calle 3"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_doctor_phone" />
+
+                    <TextView
+                        android:id="@+id/profile_doctor_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="La Paz"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_doctor_address" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </com.google.android.material.card.MaterialCardView>

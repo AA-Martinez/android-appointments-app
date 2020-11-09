@@ -1,4 +1,4 @@
-package com.example.consultasmedicas.model;
+package com.example.consultasmedicas.model.AppUser;
 
 public class AppUserDto {
     private String username;
