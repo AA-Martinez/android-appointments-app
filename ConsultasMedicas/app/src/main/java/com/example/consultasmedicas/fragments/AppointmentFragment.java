@@ -71,7 +71,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
                             AppointmentDAO appointmentDAO = gson.fromJson(jsonArray.getJSONObject(i).toString(),AppointmentDAO.class);
                             appointments.add(appointmentDAO);
                             appointmentAdapter.notifyDataSetChanged();
-                            Log.d("APPOINTMENT", i+" "+appointmentDAO.getId());
+                            //Log.d("APPOINTMENT", i+" "+appointmentDAO.getId());
                         }
 
 
@@ -95,6 +95,9 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("id_appointment", appointments.get(position).getId());
         editor.apply();
+
+        Log.e("APPOINTMENTID", String.valueOf(sharedPreferences.getInt("id_appointment", 0)));
+
         ((Navigation) getActivity()).navigateTo(new ChatFragment(), true);
 
     }

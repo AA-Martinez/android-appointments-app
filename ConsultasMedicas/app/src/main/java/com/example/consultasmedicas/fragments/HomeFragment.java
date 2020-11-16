@@ -106,7 +106,13 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
                         ciMenuTextView.setText(patientDAO.getAppUser().getCi());
                         nameMenuTextView.setText((patientDAO.getAppUser().getFirstName() + " " + patientDAO.getAppUser().getLastName()).toString());
 
-                        //testTextView.setText(patientDAO.getAppUser().getFirstName()+" "+patientDAO.getAppUser().getLastName());
+                        sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("appUserId", patientDAO.getAppUser().getId());
+                        editor.apply();
+
+                        Log.e("APPUSERID", String.valueOf(sharedPreferences.getInt("appUserId", 0)));
+
 
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
@@ -161,7 +167,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             ((Navigation) getActivity()).navigateTo(new CreateConsultFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }else if (id == R.id.my_consul){
-            ((Navigation) getActivity()).navigateTo(new MyConsultFragment(), true);
+            ((Navigation) getActivity()).navigateTo(new AppointmentFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 
