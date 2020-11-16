@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.fragments.profileConfig.ChatFragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

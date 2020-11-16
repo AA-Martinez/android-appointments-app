@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             drawerLayout.closeDrawer(GravityCompat.START);
         }
         else if (id == R.id.medics){
-            ((Navigation) getActivity()).navigateTo(new DoctorFragment(), true);
+            ((Navigation) getActivity()).navigateTo(new SpecialtyFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }else if (id == R.id.create_cons){
             ((Navigation) getActivity()).navigateTo(new CreateConsultFragment(), true);

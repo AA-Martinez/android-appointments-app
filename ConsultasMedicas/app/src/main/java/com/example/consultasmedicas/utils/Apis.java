@@ -1,8 +1,11 @@
 package com.example.consultasmedicas.utils;
 
+import com.example.consultasmedicas.model.Appointment.Appointment;
 import com.example.consultasmedicas.model.Medication.Medication;
 import com.example.consultasmedicas.model.Substance.Substance;
 import com.example.consultasmedicas.utils.Allergy.AllergyService;
+import com.example.consultasmedicas.utils.Appointment.AppointmentService;
+import com.example.consultasmedicas.utils.Degree.DegreeService;
 import com.example.consultasmedicas.utils.Disease.DiseaseService;
 import com.example.consultasmedicas.utils.Doctor.DoctorService;
 import com.example.consultasmedicas.utils.Login.LoginService;
@@ -47,4 +50,11 @@ public class Apis {
         return RetrofitController.buildRetrofit(URL_001).create(DoctorService.class);
     }
 
+    public static AppointmentService appointmentService(){
+        return RetrofitController.buildRetrofit(URL_001).create(AppointmentService.class);
+    }
+
+    public static DegreeService degreeService(){
+        return RetrofitController.buildRetrofit(URL_001).create(DegreeService.class);
+    }
 }

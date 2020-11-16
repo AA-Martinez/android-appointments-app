@@ -55,9 +55,11 @@
             android:layout_marginBottom="15dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/symptomsEditText"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:inputType="text"
+                android:fallbackLineSpacing="true"
                 android:lines="5" />
         </com.google.android.material.textfield.TextInputLayout>
 

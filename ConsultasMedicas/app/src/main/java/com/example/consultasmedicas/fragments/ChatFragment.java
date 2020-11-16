@@ -1,4 +1,4 @@
-package com.example.consultasmedicas.fragments.profileConfig;
+package com.example.consultasmedicas.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
