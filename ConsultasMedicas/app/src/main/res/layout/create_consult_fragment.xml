@@ -137,7 +137,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:backgroundTint="@android:color/darker_gray"
             android:text="@string/button_next"
-            app:layout_constraintHorizontal_bias="1.1"
+            app:layout_constraintHorizontal_bias="0.8"
             >
 
         </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>

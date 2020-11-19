@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,12 +44,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
 
     SharedPreferences sharedPreferences;
     String jwtString;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
-    }
 
     TextView ciMenuTextView;
     TextView nameMenuTextView;
@@ -55,7 +52,16 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageView nav_menu;
+    WebView webView;
 
+    String url = "https://www.minsalud.gob.bo";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -64,7 +70,10 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        final TextView testTextView = view.findViewById(R.id.test_text_view);
+        webView = view.findViewById(R.id.webview);
+        WebSettings ajustesVisorWeb = webView.getSettings();
+        ajustesVisorWeb.setJavaScriptEnabled(true);
+        webView.loadUrl(url);
 
         sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         jwtString = (sharedPreferences.getString("auth-token","")).replace("Bearer ","");
@@ -159,15 +168,17 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         } else if (id == R.id.my_account){
             ((Navigation) getActivity()).navigateTo(new ProfileFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else if (id == R.id.medics){
+        } else if (id == R.id.medics){
             ((Navigation) getActivity()).navigateTo(new SpecialtyFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else if (id == R.id.create_cons){
+        } else if (id == R.id.create_cons){
             ((Navigation) getActivity()).navigateTo(new CreateConsultFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else if (id == R.id.my_consul){
+        } else if (id == R.id.my_consul){
             ((Navigation) getActivity()).navigateTo(new AppointmentFragment(), true);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (id == R.id.quick_appointment){
+            ((Navigation) getActivity()).navigateTo(new QuickAppointmentFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 

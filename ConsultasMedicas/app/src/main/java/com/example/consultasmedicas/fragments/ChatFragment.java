@@ -80,7 +80,7 @@ public class ChatFragment extends Fragment {
         rvChatField.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
         rvChatField.setAdapter(chatAdapter);
         rvChatField.setHasFixedSize(true);
-
+        rvChatField.getRecycledViewPool().setMaxRecycledViews(0, 0);
         sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
 
         FirebaseFirestore.getInstance().collection("messages").orderBy("creationTimeStamp", Query.Direction.ASCENDING)

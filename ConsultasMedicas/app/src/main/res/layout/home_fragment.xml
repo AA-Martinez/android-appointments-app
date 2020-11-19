@@ -34,16 +34,26 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/menu" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/nav_menu_button"
+                android:text="Inicio"
+                android:textSize="20dp"
+                android:textColor="@color/cardview_light_background">
 
+            </TextView>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/test_text_view"
+
+        <WebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        </TextView>
-
+        </WebView>
     </LinearLayout>
 
 
