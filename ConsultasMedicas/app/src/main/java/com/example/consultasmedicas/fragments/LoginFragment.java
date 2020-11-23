@@ -2,6 +2,7 @@ package com.example.consultasmedicas.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import okhttp3.Headers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,16 +22,35 @@ import retrofit2.Response;
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.AppUser.AppUserDto;
+import com.example.consultasmedicas.utils.ApiMedic.ApiMedicService;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Login.LoginService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public class LoginFragment extends Fragment {
 
     LoginService loginService = Apis.loginUserService();
+    ApiMedicService apiMedicService = Apis.apiMedicService();
     TextInputLayout passwordTextInput;
+
+    public static final String ApiMedicUsername = "maximilian.vino@ucb.edu.bo";
+    public static final String ApiMedicPassword = "Ac2i8LTp4q5CYz67N";
+    public static final String ApiMedicUrl = "https://sandbox-authservice.priaid.ch/login";
 
     @Override
     public View onCreateView(
@@ -56,7 +78,6 @@ public class LoginFragment extends Fragment {
                     AppUserDto appUserDto = new AppUserDto();
                     appUserDto.setUsername(appUserEditText.getText().toString());
                     appUserDto.setPassword(passwordEditText.getText().toString());
-
                     authUser(appUserDto, view);
 
 
@@ -68,20 +89,23 @@ public class LoginFragment extends Fragment {
 
     }
 
-
     public void authUser(AppUserDto appUserDto, View view){
         Call<Void> call = loginService.login(appUserDto);
         call.enqueue(new Callback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    try {
+                        LoadToken(ApiMedicUsername, ApiMedicPassword, ApiMedicUrl, view);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     Headers headers = response.headers();
-                    SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("auth-token", headers.get("Authorization"));
-                    editor.apply();
 
-                    Log.e("hfsp", sharedPreferences.getString("auth-token", ""));
+                    SharedPreferencesUtils.SaveStringDataToSharedPreferences("auth-token", headers.get("Authorization"), view);
+
+                    Log.e("FromSharedPreferencesTj", SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
 
                     Toast.makeText(view.getContext(), "Login correcto", Toast.LENGTH_SHORT).show();
                     passwordTextInput.setError(null);
@@ -100,4 +124,52 @@ public class LoginFragment extends Fragment {
         });
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void LoadToken(String username, String password, String url, View view) throws Exception{
+        SecretKeySpec secretKeySpec = new SecretKeySpec(
+                password.getBytes(),
+                "HmacMD5");
+
+        String computedHashString = "";
+        try {
+            Mac mac = Mac.getInstance("HmacMD5");
+            mac.init(secretKeySpec);
+            byte[] result = mac.doFinal(url.getBytes());
+
+            computedHashString = Base64.getEncoder().encodeToString(result);
+
+            Call<ResponseBody> call = apiMedicService.loginApiMedic("Bearer " + username + ":"+ computedHashString);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        SharedPreferencesUtils.SaveStringDataToSharedPreferences("apiMedicToken", jsonObject.get("Token").toString(), view);
+                        Log.e("FromSharedPreferencesT", SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("apiMedicToken", view));
+
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                }
+            });
+
+        }catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+            throw new Exception("Error (No such algorithm exception)");
+        }catch (InvalidKeyException e){
+            e.printStackTrace();
+            throw new Exception("Error (Invalid key exception)");
+        }
+
+    }
+
+
 }

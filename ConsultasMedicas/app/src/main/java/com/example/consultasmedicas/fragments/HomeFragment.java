@@ -70,10 +70,10 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        webView = view.findViewById(R.id.webview);
-        WebSettings ajustesVisorWeb = webView.getSettings();
-        ajustesVisorWeb.setJavaScriptEnabled(true);
-        webView.loadUrl(url);
+        //webView = view.findViewById(R.id.webview);
+        //WebSettings ajustesVisorWeb = webView.getSettings();
+        //ajustesVisorWeb.setJavaScriptEnabled(true);
+        //webView.loadUrl(url);
 
         sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         jwtString = (sharedPreferences.getString("auth-token","")).replace("Bearer ","");
@@ -83,12 +83,6 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         byte[] decodedBytes = Base64.getDecoder().decode(jwtItems[1]);
         String decodedString = new String(decodedBytes);
 
-        //Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
-        //String appUserId = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtString).getBody().get("appUserId", String.class);
-
-
-        //testTextView.setText("");
 
         drawerLayout = view.findViewById(R.id.drawer_layout);
         navigationView = view.findViewById(R.id.navigation_view);

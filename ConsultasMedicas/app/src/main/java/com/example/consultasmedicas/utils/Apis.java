@@ -4,6 +4,7 @@ import com.example.consultasmedicas.model.Appointment.Appointment;
 import com.example.consultasmedicas.model.Medication.Medication;
 import com.example.consultasmedicas.model.Substance.Substance;
 import com.example.consultasmedicas.utils.Allergy.AllergyService;
+import com.example.consultasmedicas.utils.ApiMedic.ApiMedicService;
 import com.example.consultasmedicas.utils.Appointment.AppointmentService;
 import com.example.consultasmedicas.utils.Degree.DegreeService;
 import com.example.consultasmedicas.utils.Disease.DiseaseService;
@@ -16,6 +17,8 @@ import com.example.consultasmedicas.utils.Substance.SubstanceService;
 public class Apis {
 
     public static final String URL_001 = "http://10.0.2.2:8080";
+    public static final String URL_002 = "https://sandbox-authservice.priaid.ch";
+
 
     public static LoginService loginUserService(){
         return RetrofitController.buildRetrofit(URL_001).create(LoginService.class);
@@ -57,4 +60,9 @@ public class Apis {
     public static DegreeService degreeService(){
         return RetrofitController.buildRetrofit(URL_001).create(DegreeService.class);
     }
+
+    public static ApiMedicService apiMedicService(){
+        return RetrofitController.buildRetrofit(URL_002).create(ApiMedicService.class);
+    }
+
 }

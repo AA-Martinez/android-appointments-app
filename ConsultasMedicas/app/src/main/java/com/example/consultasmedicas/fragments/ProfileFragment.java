@@ -27,6 +27,7 @@ import com.example.consultasmedicas.model.Patient.Patient;
 import com.example.consultasmedicas.model.Patient.PatientDAO;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Patient.PatientService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -43,7 +44,6 @@ import retrofit2.http.PATCH;
 public class ProfileFragment extends Fragment{
 
     PatientService patientService = Apis.patientService();
-    SharedPreferences sharedPreferences;
     TextView tvProfileName, tvProfileCI, tvProfileEmail, tvProfileAddress, tvProfileGenre, tvProfileWeight, tvProfileHeight, tvProfileBirthDay, tvProfileCity;
 
     @Override
@@ -64,8 +64,7 @@ public class ProfileFragment extends Fragment{
         tvProfileCity = view.findViewById(R.id.profile_city);
 
 
-        sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        Call<ResponseBody> call = patientService.getPatient("1",(sharedPreferences.getString("auth-token","")));
+        Call<ResponseBody> call = patientService.getPatient("1", SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
