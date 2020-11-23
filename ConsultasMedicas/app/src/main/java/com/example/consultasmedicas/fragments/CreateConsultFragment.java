@@ -1,5 +1,6 @@
 package com.example.consultasmedicas.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,9 +23,21 @@ import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.Appointment.Appointment;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Appointment.AppointmentService;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.jaiselrahman.filepicker.activity.FilePickerActivity;
+import com.jaiselrahman.filepicker.config.Configurations;
+import com.jaiselrahman.filepicker.model.MediaFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,11 +66,11 @@ public class CreateConsultFragment extends Fragment{
     private ImageView imageView;
     private TextView tvTest;
     private LinearLayout layout;
-    private Uri fileUri;
-    private String filePath;
 
-    private ArrayList<Uri> uriList = new ArrayList<>();
-    private ArrayList<String> pathList = new ArrayList<>();
+
+    private ProgressDialog progressDialog;
+    private ArrayList<MediaFile> files;
+    private StorageReference storageReference;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -66,6 +79,9 @@ public class CreateConsultFragment extends Fragment{
         authToken = sharedPreferences.getString("auth-token","");
         appointment = new Appointment();
 
+        progressDialog = new ProgressDialog(getActivity().getApplicationContext());
+        storageReference = FirebaseStorage.getInstance().getReference();
+        Log.e("StorageReference", "onCreateView: " + storageReference);
         View view = inflater.inflate(R.layout.create_consult_fragment, container, false);
 
         etSymptoms = (TextInputEditText) view.findViewById(R.id.symptomsEditText);
@@ -78,15 +94,25 @@ public class CreateConsultFragment extends Fragment{
         fabtnAddFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                chooseFile.setType("*/*");
-                chooseFile = Intent.createChooser(chooseFile, "Escoja un archivo");
-                startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                Intent intent = new Intent(getActivity().getApplicationContext(), FilePickerActivity.class);
+                intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                        .setCheckPermission(true)
+                        .setShowImages(true)
+                        .setShowVideos(true)
+                        .setShowFiles(true)
+                        .enableImageCapture(true)
+                        .enableVideoCapture(true)
+                        .setSuffixes("txt","pdf","zip","rar","doc","docx")
+                        .setMaxSelection(3)
+                        .setSkipZeroSizeFiles(true)
+                        .build());
+                startActivityForResult(intent, PICKFILE_RESULT_CODE);
             }
         });
         efabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 appointment.setMessage(etSymptoms.getText().toString());
                 appointment.setPatientId("1");
 
@@ -96,12 +122,58 @@ public class CreateConsultFragment extends Fragment{
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.isSuccessful()){
                             Log.d("APPOINTMENT", "onResponse: "+response.body().toString());
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        for (int i = 0; i < files.size(); i++) {
+                            StorageReference filesRef = storageReference.child("images/" + files.get(i).getUri());
+                            Log.d("FILE URI", ""+files.get(i).getUri());
+                            UploadTask uploadTask = filesRef.putFile(files.get(i).getUri());
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                }
+                            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                                    Log.d("PROGRESS", "Upload is " + progress + "% done");
+                                }
+                            });
+
+                            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                @Override
+                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                    if (!task.isSuccessful()) {
+                                        throw task.getException();
+                                    }
+
+                                    // Continue with the task to get the download URL
+                                    return filesRef.getDownloadUrl();
+                                }
+                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    if (task.isSuccessful()) {
+                                        Uri downloadUri = task.getResult();
+                                        Log.d("URL DOWNLOAD",downloadUri+"");
+                                    } else {
+                                        // Handle failures
+                                        // ...
+                                    }
+                                }
+                            });
+
+                        }
                     }
                 });
             }
@@ -116,39 +188,27 @@ public class CreateConsultFragment extends Fragment{
         switch (requestCode) {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == -1) {
-
-                    fileUri = data.getData();
-                    filePath = fileUri.getPath();
-
-                    uriList.add(fileUri);
-                    pathList.add(filePath);
-
+                    files = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
                     String ct = "";
-                    Log.d("LIST", "Size "+pathList.size());
-                    for(int i=0;i<pathList.size();i++){
-                        ct=ct+pathList.get(i)+" \n";
+                    Log.d("FILES LIST", "Size " + files.size());
+                    for (int i = 0; i < files.size(); i++) {
+                        ImageView image = new ImageView(getActivity().getApplicationContext());
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300, 300);
+                        layoutParams.setMargins(10, 10, 10, 10);
+                        image.setLayoutParams(layoutParams);
+                        image.setBackgroundColor(Color.GRAY);
+                        image.setMaxHeight(100);
+                        image.setMaxWidth(100);
+                        image.setImageURI(files.get(i).getUri());
+                        layout.addView(image);
+                        ct = ct + files.get(i).getUri() + " \n";
+
 
                     }
 
-                    ImageView image = new ImageView(getActivity().getApplicationContext());
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200,200);
-                    layoutParams.setMargins(20,20,20,20);
-                    image.setLayoutParams(layoutParams);
-                    image.setBackgroundColor(Color.GRAY);
-                    image.setMaxHeight(100);
-                    image.setMaxWidth(100);
-
-                    image.setImageURI(fileUri);
-                    layout.addView(image);
-                    Log.d("LIST", "onActivityResult: "+ct);
+                    Log.d("LIST", "onActivityResult: " + ct);
                     tvTest.setText("");
-
-                    //imageView.setImageURI(fileUri);
-
-
-
                 }
-
                 break;
         }
     }

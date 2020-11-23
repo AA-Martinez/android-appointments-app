@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.consultasmedicas.fragments.CreateConsultFragment;
 import com.example.consultasmedicas.fragments.LoginFragment;
 import com.example.consultasmedicas.fragments.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements  Navigation{
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, new LoginFragment())
+                    .add(R.id.container, new CreateConsultFragment())
                     .commit();
         }
 

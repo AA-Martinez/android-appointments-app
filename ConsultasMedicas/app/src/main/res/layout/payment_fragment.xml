@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.RegisterFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/menu"
+                app:title="Pago por servicio" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:paddingTop="16dp"
+            android:orientation="vertical">
+
+        <!-- Nombre -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_text_input"
+            style="@style/Widget.App.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:startIconDrawable="@drawable/ic_baseline_person_24"
+            android:hint="Nombre del titular">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- end Nombre -->
+
+        <!-- Nº Tarjeta -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/card_text_input"
+            style="@style/Widget.App.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:helperText="1234-1234-1234-1234"
+            app:counterMaxLength="19"
+            app:counterEnabled="true"
+            app:startIconDrawable="@drawable/ic_baseline_credit_card_24"
+            android:hint="Nº Tarjeta">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/card_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- end Nº Tarjeta -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <!-- Fecha de caducidad -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/birth_date_text_input"
+                style="@style/Widget.App.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="7"
+                app:helperTextEnabled="true"
+                app:helperText="mm/aaaa"
+                app:startIconDrawable="@drawable/ic_baseline_today_24"
+                android:layout_weight="1"
+                android:hint="Caducidad">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/birth_date_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- end Fecha de caducidad -->
+
+            <!-- Nº Tarjeta -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/code_text_input"
+                style="@style/Widget.App.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:counterMaxLength="4"
+                app:counterEnabled="true"
+                app:startIconDrawable="@drawable/ic_baseline_credit_card_24"
+                android:layout_weight="1"
+                android:hint="Cód. Seguridad">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/code_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- end Nº Tarjeta -->
+
+        </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Boton: Siguiente -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="Pagar" />
+            <!-- end Boton: Siguiente -->
+
+            <!-- Boton: Cancelar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="-2dp"
+                android:text="@string/button_cancel" />
+            <!-- Boton: Cancelar -->
+        </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
