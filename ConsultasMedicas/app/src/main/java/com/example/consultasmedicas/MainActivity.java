@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements  Navigation{
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, new CreateConsultFragment())
+                    .add(R.id.container, new LoginFragment())
                     .commit();
         }
 
