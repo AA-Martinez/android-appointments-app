@@ -45,7 +45,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class LoginFragment extends Fragment {
 
     LoginService loginService = Apis.loginUserService();
-    ApiMedicService apiMedicService = Apis.apiMedicService();
+    ApiMedicService apiMedicService = Apis.apiMedicServiceLogin();
     TextInputLayout passwordTextInput;
 
     public static final String ApiMedicUsername = "maximilian.vino@ucb.edu.bo";

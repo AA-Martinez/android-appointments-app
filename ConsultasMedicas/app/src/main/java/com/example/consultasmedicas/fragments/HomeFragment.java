@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,7 +66,6 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
         //webView = view.findViewById(R.id.webview);
@@ -172,7 +170,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             ((Navigation) getActivity()).navigateTo(new AppointmentFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (id == R.id.quick_appointment){
-            ((Navigation) getActivity()).navigateTo(new QuickAppointmentFragment(), true);
+            ((Navigation) getActivity()).navigateTo(new QuickAppointmentSymptomsFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 

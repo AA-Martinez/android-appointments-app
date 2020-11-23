@@ -18,7 +18,7 @@ public class Apis {
 
     public static final String URL_001 = "http://10.0.2.2:8080";
     public static final String URL_002 = "https://sandbox-authservice.priaid.ch";
-
+    public static final String URL_003 = "https://sandbox-healthservice.priaid.ch";
 
     public static LoginService loginUserService(){
         return RetrofitController.buildRetrofit(URL_001).create(LoginService.class);
@@ -48,7 +48,6 @@ public class Apis {
         return RetrofitController.buildRetrofit(URL_001).create(SubstanceService.class);
     }
 
-
     public static DoctorService doctorService(){
         return RetrofitController.buildRetrofit(URL_001).create(DoctorService.class);
     }
@@ -61,8 +60,12 @@ public class Apis {
         return RetrofitController.buildRetrofit(URL_001).create(DegreeService.class);
     }
 
-    public static ApiMedicService apiMedicService(){
+    public static ApiMedicService apiMedicServiceLogin(){
         return RetrofitController.buildRetrofit(URL_002).create(ApiMedicService.class);
+    }
+
+    public static ApiMedicService apiMedicServiceData(){
+        return RetrofitController.buildRetrofit(URL_003).create(ApiMedicService.class);
     }
 
 }
