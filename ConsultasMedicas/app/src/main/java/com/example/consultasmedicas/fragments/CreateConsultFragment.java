@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.Appointment.Appointment;
 import com.example.consultasmedicas.utils.Apis;
@@ -178,6 +179,8 @@ public class CreateConsultFragment extends Fragment{
 
                     }
                 });
+
+                ((Navigation) getActivity()).navigateTo(new PaymentFragment(), true);
             }
         });
 
