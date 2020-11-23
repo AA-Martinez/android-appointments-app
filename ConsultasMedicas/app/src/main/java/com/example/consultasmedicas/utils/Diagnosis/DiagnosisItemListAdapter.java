@@ -47,15 +47,15 @@ public class DiagnosisItemListAdapter extends RecyclerView.Adapter<DiagnosisItem
         holder.tvDiagnosisCause.setText(diagnoses.get(position).getIssue().getProfName());
 
         if (diagnoses.get(position).getIssue().getAccuracy() >= 90){
-            holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#8B0000"));
+            holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#006400"));
         }else if(diagnoses.get(position).getIssue().getAccuracy() >= 60 && diagnoses.get(position).getIssue().getAccuracy() < 90){
-            holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#FF8C00"));
-
-        }else if (diagnoses.get(position).getIssue().getAccuracy() >= 30 && diagnoses.get(position).getIssue().getAccuracy() < 60){
             holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#F9C70C"));
 
+        }else if (diagnoses.get(position).getIssue().getAccuracy() >= 30 && diagnoses.get(position).getIssue().getAccuracy() < 60){
+            holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#FF8C00"));
+
         }else if (diagnoses.get(position).getIssue().getAccuracy() >= 0 && diagnoses.get(position).getIssue().getAccuracy() < 30){
-            holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#006400"));
+            holder.tvDiagnosisAccuracy.setTextColor(Color.parseColor("#8B0000"));
 
         }
         DecimalFormat formato1 = new DecimalFormat("#.00");
