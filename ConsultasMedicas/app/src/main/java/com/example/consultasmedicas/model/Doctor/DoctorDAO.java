@@ -4,6 +4,7 @@ package com.example.consultasmedicas.model.Doctor;
 import java.util.List;
 
 import com.example.consultasmedicas.model.AppUser.AppUser;
+import com.example.consultasmedicas.model.Degree.DegreeDAO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -20,7 +21,7 @@ public class DoctorDAO {
     private List<Object> appointments = null;
     @SerializedName("degrees")
     @Expose
-    private List<Object> degrees = null;
+    private List<DegreeDAO> degrees;
     @SerializedName("jobs")
     @Expose
     private List<Object> jobs = null;
@@ -49,11 +50,11 @@ public class DoctorDAO {
         this.appointments = appointments;
     }
 
-    public List<Object> getDegrees() {
+    public List<DegreeDAO> getDegrees() {
         return degrees;
     }
 
-    public void setDegrees(List<Object> degrees) {
+    public void setDegrees(List<DegreeDAO> degrees) {
         this.degrees = degrees;
     }
 

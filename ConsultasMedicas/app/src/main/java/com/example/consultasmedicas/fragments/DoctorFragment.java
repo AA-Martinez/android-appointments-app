@@ -19,10 +19,13 @@ import com.example.consultasmedicas.model.Allergy.Allergy;
 import com.example.consultasmedicas.model.AppUser.AppUser;
 import com.example.consultasmedicas.model.Doctor.Doctor;
 import com.example.consultasmedicas.model.Doctor.DoctorDAO;
+import com.example.consultasmedicas.model.RequestResponse.RequestResponse;
 import com.example.consultasmedicas.utils.Allergy.AllergyAdapter;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Doctor.DoctorAdapter;
 import com.example.consultasmedicas.utils.Doctor.DoctorService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,37 +76,15 @@ public class DoctorFragment extends Fragment implements DoctorAdapter.OnNoteList
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++){
                             JSONObject object = jsonArray.getJSONObject(i);
+                            Gson gson = new Gson();
+                            DoctorDAO doctorDAO = gson.fromJson(object.toString(), DoctorDAO.class);
+                            for (int j = 0; j < doctorDAO.getDegrees().size(); j++){
+                                if (doctorDAO.getDegrees().get(j).getSpecialty().equals(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("selected_speciality", view))){
+                                    doctors.add(doctorDAO);
+                                    doctorAdapter.notifyDataSetChanged();
+                                }
+                            }
 
-                            DoctorDAO doctorDAO = new DoctorDAO();
-                            // AppUser for Doctor
-                            AppUser appUser = new AppUser();
-                            appUser.setAddress(object.getJSONObject("appUser").getString("address"));
-                            appUser.setBirthCountry(object.getJSONObject("appUser").getString("birthCountry"));
-                            appUser.setBirthDate(object.getJSONObject("appUser").getString("birthDate"));
-                            appUser.setCi(object.getJSONObject("appUser").getString("ci"));
-                            appUser.setCity(object.getJSONObject("appUser").getString("city"));
-                            appUser.setCreationTimeStamp(object.getJSONObject("appUser").getString("creationTimeStamp"));
-                            appUser.setEmail(object.getJSONObject("appUser").getString("email"));
-                            appUser.setFirstName(object.getJSONObject("appUser").getString("firstName"));
-                            appUser.setGenre(object.getJSONObject("appUser").getString("genre"));
-                            appUser.setId(object.getJSONObject("appUser").getInt("id"));
-                            appUser.setLastName(object.getJSONObject("appUser").getString("lastName"));
-                            appUser.setPhone(object.getJSONObject("appUser").getString("phone"));
-                            appUser.setUsername(object.getJSONObject("appUser").getString("username"));
-
-                            // DoctorDao
-
-                            doctorDAO.setAppUser(appUser);
-                            doctorDAO.setAppointments(null);
-                            doctorDAO.setDegrees(null);
-                            doctorDAO.setJobs(null);
-                            doctorDAO.setId(object.getInt("id"));
-
-                            // Doctor List
-
-                            doctors.add(doctorDAO);
-                            doctorAdapter.notifyDataSetChanged();
-                            Log.e("aaa", object.getJSONObject("appUser").getString("firstName"));
                         }
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();

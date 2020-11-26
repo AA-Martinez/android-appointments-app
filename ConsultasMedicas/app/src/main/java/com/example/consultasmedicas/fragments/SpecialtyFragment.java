@@ -14,6 +14,7 @@ import com.example.consultasmedicas.model.Degree.DegreeDAO;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Degree.DegreeAdapter;
 import com.example.consultasmedicas.utils.Degree.DegreeService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -90,6 +91,11 @@ public class SpecialtyFragment extends Fragment implements DegreeAdapter.OnNoteL
 
     @Override
     public void onNoteClick(int position) {
-
+        Log.d("TAG", "onNoteClick: " + position);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("selected_speciality", specialties.get(position).getSpecialty());
+        editor.apply();
+        ((Navigation) getActivity()).navigateTo(new DoctorFragment(), true);
     }
 }
