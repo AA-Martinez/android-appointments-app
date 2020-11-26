@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,10 +69,10 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        //webView = view.findViewById(R.id.webview);
-        //WebSettings ajustesVisorWeb = webView.getSettings();
-        //ajustesVisorWeb.setJavaScriptEnabled(true);
-        //webView.loadUrl(url);
+        webView = view.findViewById(R.id.webview);
+        WebSettings ajustesVisorWeb = webView.getSettings();
+        ajustesVisorWeb.setJavaScriptEnabled(true);
+        webView.loadUrl(url);
 
         sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         jwtString = (sharedPreferences.getString("auth-token","")).replace("Bearer ","");
