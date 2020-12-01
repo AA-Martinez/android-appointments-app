@@ -1,7 +1,6 @@
 package com.example.consultasmedicas.utils.Allergy;
 
 import com.example.consultasmedicas.model.Allergy.Allergy;
-import com.example.consultasmedicas.model.Allergy.AllergyDAO;
 import com.example.consultasmedicas.model.Patient.Patient;
 import com.example.consultasmedicas.model.RequestResponse.RequestResponse;
 import com.example.consultasmedicas.model.UpdateResponse.UpdateResponse;
@@ -25,7 +24,7 @@ public interface AllergyService {
     Call<ResponseBody> getAllergies(@Header("Authorization") String authHeader);
 
     @POST("/allergy")
-    Call<ResponseBody> createAllergy(@Body AllergyDAO allergy, @Header("Authorization") String authHeader);
+    Call<ResponseBody> createAllergy(@Body Allergy allergy, @Header("Authorization") String authHeader);
 
     @PUT("/patient/{appUserId}/allergy")
     Call<ResponseBody> addAllergyToPatien(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);

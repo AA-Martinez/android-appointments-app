@@ -1,9 +1,18 @@
 package com.example.consultasmedicas.model.Substance;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Substance {
 
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("description")
+    @Expose
     private String description;
 
     public Substance(int id, String name, String description) {
@@ -12,10 +21,11 @@ public class Substance {
         this.description = description;
     }
 
-    public Substance (String name, String description){
+    public Substance(String name, String description){
         this.name = name;
         this.description = description;
     }
+
 
     public int getId() {
         return id;
@@ -39,6 +49,11 @@ public class Substance {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 
 }

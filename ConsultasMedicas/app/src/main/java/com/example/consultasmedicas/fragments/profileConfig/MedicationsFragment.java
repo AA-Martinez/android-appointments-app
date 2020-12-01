@@ -6,24 +6,33 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.consultasmedicas.R;
+import com.example.consultasmedicas.model.Disease.Disease;
 import com.example.consultasmedicas.model.Medication.Medication;
+import com.example.consultasmedicas.model.Patient.PatientDAO;
+import com.example.consultasmedicas.model.UpdateResponse.UpdateResponse;
 import com.example.consultasmedicas.utils.Apis;
-import com.example.consultasmedicas.utils.Medication.MedicationAdapter;
 import com.example.consultasmedicas.utils.Medication.MedicationService;
+import com.example.consultasmedicas.utils.Patient.PatientService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,13 +49,23 @@ import retrofit2.Response;
 
 public class MedicationsFragment extends Fragment {
 
-    /*
-    EditText etMedicationSeacher;
-    RecyclerView rvMedicationList;
-    MedicationAdapter medicationAdapter;
-    List<Medication> medications;
-
     MedicationService medicationService = Apis.medicationService();
+    PatientService patientService = Apis.patientService();
+
+    FloatingActionButton fabAddNewMedication;
+    ExtendedFloatingActionButton fabSaveMedications;
+    AutoCompleteTextView actMedicationList;
+    ListView lvSelectedMedications;
+    MaterialToolbar materialToolbar;
+
+    public void initComponents(View view){
+        fabAddNewMedication = view.findViewById(R.id.fabAddConfig);
+        fabSaveMedications = view.findViewById(R.id.fabSaveConfig);
+        actMedicationList = view.findViewById(R.id.actSearcherConfig);
+        lvSelectedMedications = view.findViewById(R.id.lvSelectedItemsConfig);
+        materialToolbar = view.findViewById(R.id.topAppBarConfig);
+        materialToolbar.setTitle("Medicaciones");
+    }
 
 
     @Override
@@ -54,35 +73,42 @@ public class MedicationsFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_config_fragment, container, false);
 
-        etMedicationSeacher = view.findViewById(R.id.etSearcher);
-        etMedicationSeacher.addTextChangedListener(new TextWatcher() {
+        List<Medication> medications = new ArrayList<Medication>();
+        List<Medication> selectedMedications = new ArrayList<Medication>();
+
+        initComponents(view);
+
+        getListOfMedications(view, medications);
+
+        ArrayAdapter<Medication> medicationArrayAdapter = new ArrayAdapter<Medication>(view.getContext(), android.R.layout.simple_list_item_1, medications);
+        actMedicationList.setAdapter(medicationArrayAdapter);
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, selectedMedications);
+        lvSelectedMedications.setAdapter(arrayAdapter);
+        getSelectedAppUserConfig(view, selectedMedications, arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
+
+        actMedicationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                filter(editable.toString());
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Medication medication = (Medication) adapterView.getItemAtPosition(i);
+                if (selectedMedications.isEmpty()){
+                    selectedMedications.add(medication);
+                    arrayAdapter.notifyDataSetChanged();
+                }else{
+                    if (selectedMedications.contains(medication)){
+                        Toast.makeText(view.getContext(), "La medicacion ya se encuentra en la lista", Toast.LENGTH_SHORT).show();
+                    }else{
+                        selectedMedications.add(medication);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }
+                actMedicationList.setText("");
+                Log.e("OTCSYM", medication.getName()+ " " + medication.getId());
             }
         });
 
-        rvMedicationList = view.findViewById(R.id.rvList);
-        rvMedicationList.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
-
-        medications = new ArrayList<>();
-        getMedications(view);
-
-        medicationAdapter = new MedicationAdapter(view.getContext(), medications);
-        rvMedicationList.setAdapter(medicationAdapter);
-
-        FloatingActionButton fabAdd = view.findViewById(R.id.fabAddConfig);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
+        fabAddNewMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LayoutInflater inflater = LayoutInflater.from(view.getContext());
@@ -97,37 +123,99 @@ public class MedicationsFragment extends Fragment {
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        createMedication(view, etAddName.getText(), etAddDescription.getText());
-                        medicationAdapter.notifyDataSetChanged();
+                        createMedication(view, etAddName.getText(), etAddDescription.getText(), medicationArrayAdapter);
+                        medications.add(new Medication(etAddName.getText().toString(), etAddDescription.getText().toString()));
+                        ArrayAdapter<Medication> medicationArrayAdapter = new ArrayAdapter<Medication>(view.getContext(), android.R.layout.simple_list_item_1, medications);
+                        actMedicationList.setAdapter(medicationArrayAdapter);
+                        medicationArrayAdapter.notifyDataSetChanged();
+
                     }
                 });
                 builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        medicationArrayAdapter.notifyDataSetChanged();
                     }
                 });
                 builder.show();
+                medicationArrayAdapter.notifyDataSetChanged();
+            }
+        });
 
+        fabSaveMedications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveListOfSelectedConfig(view, selectedMedications);
+                Toast.makeText(view.getContext(), "Se guardaron las configuraciones", Toast.LENGTH_SHORT).show();
             }
         });
 
         return view;
     }
 
-    public void filter (String text){
-        ArrayList<Medication> filterList = new ArrayList<>();
-        for (Medication medication  : medications){
-            if (medication.getName().toLowerCase().contains(text.toLowerCase())){
-                filterList.add(medication);
+    private void getSelectedAppUserConfig(View view, List<Medication> selectedMedications, ArrayAdapter arrayAdapter){
+        Call<ResponseBody> call = patientService.getPatient("1",(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view)));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        PatientDAO patientDAO = gson.fromJson(jsonObject.getJSONObject("data").toString(), PatientDAO.class);
+                        if (patientDAO.getMedications().size() == 0){
+                            Toast.makeText(view.getContext(), "Sin medicacion", Toast.LENGTH_SHORT).show();
+                        }else{
+                            for (int i = 0; i < patientDAO.getMedications().size(); i++){
+                                selectedMedications.add(patientDAO.getMedications().get(i));
+                                arrayAdapter.notifyDataSetChanged();
+                                Log.e("All", String.valueOf(patientDAO.getMedications().get(i).getName()));
+                            }
+                        }
+
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
-        medicationAdapter.filter(filterList);
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("ERROR", "onFailure: "+t.getMessage());
+
+            }
+        });
+
     }
 
-    private void getMedications(View view){
-        SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        Call<ResponseBody> call = medicationService.getMedications(sharedPreferences.getString("auth-token", ""));
+    private void saveListOfSelectedConfig(View view, List<Medication> selectedMedications){
+        List<UpdateResponse> updateResponses = new ArrayList<>();
+        for (Medication medication: selectedMedications
+        ) {
+            UpdateResponse updateResponse = new UpdateResponse();
+            updateResponse.setId(medication.getId());
+            updateResponses.add(updateResponse);
+        }
+
+        Call<ResponseBody> call = medicationService.addMedicationToPatient(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    Log.e("SCC" , "Nashe");
+                }
+                Log.e("Fallo", String.valueOf(response.code()));
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
+    }
+
+    private void getListOfMedications(View view, List<Medication> medications){
+        Call<ResponseBody> call = medicationService.getMedications(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -137,8 +225,9 @@ public class MedicationsFragment extends Fragment {
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++){
                             JSONObject object = jsonArray.getJSONObject(i);
-                            medications.add(new Medication(object.getInt("id"), object.getString("name"), object.getString("description")));
-                            medicationAdapter.notifyDataSetChanged();
+                            Gson gson = new Gson();
+                            Medication medication = gson.fromJson(object.toString(), Medication.class);
+                            medications.add(medication);
                         }
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
@@ -151,16 +240,16 @@ public class MedicationsFragment extends Fragment {
                 Log.e("ADAO", t.getMessage());
             }
         });
-
     }
 
-    private void createMedication(View view, Editable name, Editable description){
+
+    private void createMedication(View view, Editable name, Editable description, ArrayAdapter<Medication> medicationArrayAdapter){
         SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Call<ResponseBody> call = medicationService.createMedication(new Medication(name.toString(),description.toString()), sharedPreferences.getString("auth-token", ""));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                medicationAdapter.notifyDataSetChanged();
+                medicationArrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -169,5 +258,5 @@ public class MedicationsFragment extends Fragment {
             }
         });
     }
-*/
+
 }

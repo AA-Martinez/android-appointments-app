@@ -1,9 +1,18 @@
 package com.example.consultasmedicas.model.Disease;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Disease {
 
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("description")
+    @Expose
     private String description;
 
     public Disease(int id, String name, String description) {
@@ -12,7 +21,7 @@ public class Disease {
         this.description = description;
     }
 
-    public Disease(String name, String description){
+    public Disease(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -41,4 +50,9 @@ public class Disease {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
+

@@ -21,4 +21,8 @@ public class GeneralInformationFragment extends Fragment {
 
         return view;
     }
+
+    public void initComponents(){
+
+    }
 }

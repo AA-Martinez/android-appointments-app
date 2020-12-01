@@ -1,8 +1,17 @@
 package com.example.consultasmedicas.model.Allergy;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Allergy {
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("description")
+    @Expose
     private String description;
 
     public Allergy(int id, String name, String description) {
@@ -39,5 +48,10 @@ public class Allergy {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

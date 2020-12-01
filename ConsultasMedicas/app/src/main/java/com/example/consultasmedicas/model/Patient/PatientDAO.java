@@ -3,8 +3,11 @@ package com.example.consultasmedicas.model.Patient;
 
 import java.util.List;
 
-import com.example.consultasmedicas.model.Allergy.AllergyDAO;
+import com.example.consultasmedicas.model.Allergy.Allergy;
 import com.example.consultasmedicas.model.AppUser.AppUser;
+import com.example.consultasmedicas.model.Disease.Disease;
+import com.example.consultasmedicas.model.Medication.Medication;
+import com.example.consultasmedicas.model.Substance.Substance;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -30,16 +33,16 @@ public class PatientDAO {
     private List<Object> appointments = null;
     @SerializedName("diseases")
     @Expose
-    private List<Object> diseases = null;
+    private List<Disease> diseases;
     @SerializedName("allergies")
     @Expose
-    private List<AllergyDAO> allergies;
+    private List<Allergy> allergies;
     @SerializedName("medications")
     @Expose
-    private List<Object> medications = null;
+    private List<Medication> medications;
     @SerializedName("substances")
     @Expose
-    private List<Object> substances = null;
+    private List<Substance> substances;
     @SerializedName("googleCalendars")
     @Expose
     private List<Object> googleCalendars = null;
@@ -92,35 +95,35 @@ public class PatientDAO {
         this.appointments = appointments;
     }
 
-    public List<Object> getDiseases() {
+    public List<Disease> getDiseases() {
         return diseases;
     }
 
-    public void setDiseases(List<Object> diseases) {
+    public void setDiseases(List<Disease> diseases) {
         this.diseases = diseases;
     }
 
-    public List<AllergyDAO> getAllergies() {
+    public List<Allergy> getAllergies() {
         return allergies;
     }
 
-    public void setAllergies(List<AllergyDAO> allergies) {
+    public void setAllergies(List<Allergy> allergies) {
         this.allergies = allergies;
     }
 
-    public List<Object> getMedications() {
+    public List<Medication> getMedications() {
         return medications;
     }
 
-    public void setMedications(List<Object> medications) {
+    public void setMedications(List<Medication> medications) {
         this.medications = medications;
     }
 
-    public List<Object> getSubstances() {
+    public List<Substance> getSubstances() {
         return substances;
     }
 
-    public void setSubstances(List<Object> substances) {
+    public void setSubstances(List<Substance> substances) {
         this.substances = substances;
     }
 
