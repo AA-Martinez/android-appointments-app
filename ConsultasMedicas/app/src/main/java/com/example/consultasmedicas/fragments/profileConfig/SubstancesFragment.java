@@ -123,7 +123,7 @@ public class SubstancesFragment extends Fragment {
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        createSubstance(view, etAddName.getText(), etAddDescription.getText(), substanceArrayAdapter);
+                        createSubstance(view, etAddName.getText(), etAddDescription.getText(), substanceArrayAdapter, substances);
                         substances.add(new Substance(etAddName.getText().toString(), etAddDescription.getText().toString()));
                         ArrayAdapter<Substance> substanceArrayAdapter = new ArrayAdapter<Substance>(view.getContext(), android.R.layout.simple_list_item_1, substances);
                         actSubstanceList.setAdapter(substanceArrayAdapter);
@@ -164,7 +164,7 @@ public class SubstancesFragment extends Fragment {
                         JSONObject jsonObject = new JSONObject(response.body().string());
                         PatientDAO patientDAO = gson.fromJson(jsonObject.getJSONObject("data").toString(), PatientDAO.class);
                         if (patientDAO.getSubstances().size() == 0){
-                            Toast.makeText(view.getContext(), "Sin medicacion", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "Sin substancias", Toast.LENGTH_SHORT).show();
                         }else{
                             for (int i = 0; i < patientDAO.getSubstances().size(); i++){
                                 selectedSubstances.add(patientDAO.getSubstances().get(i));
@@ -177,6 +177,43 @@ public class SubstancesFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+
+                actSubstanceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Substance substance = (Substance) adapterView.getItemAtPosition(i);
+                        Boolean aBoolean = false;
+                        /*for (Allergy allergy1: selectedAllergies
+                             ) {
+                            Log.e("TEST", allergy1.getName());
+                        }*/
+                        Log.e("TEST", substance.getName());
+
+                        if (selectedSubstances.isEmpty()){
+                            Log.e("TEST", "dentro de vacio");
+                            selectedSubstances.add(substance);
+                            arrayAdapter.notifyDataSetChanged();
+                        }else{
+
+                            for (Substance substanceOnList: selectedSubstances
+                            ) {
+                                if (substanceOnList.getName().equals(substance.getName())){
+                                    Log.e("TEST", "dentro de existe");
+                                    Toast.makeText(view.getContext(), "La medicacion ya se encuentra en la lista", Toast.LENGTH_SHORT).show();
+                                    aBoolean = true;
+                                }
+                            }
+                            if(!aBoolean){
+                                Log.e("TEST", "dentro de no existe");
+                                selectedSubstances.add(substance);
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        actSubstanceList.setText("");
+                        Log.e("OTCSYM", substance.getName()+ " " + substance.getId());
+                    }
+                });
+
             }
 
             @Override
@@ -195,23 +232,23 @@ public class SubstancesFragment extends Fragment {
             UpdateResponse updateResponse = new UpdateResponse();
             updateResponse.setId(substance.getId());
             updateResponses.add(updateResponse);
-        }
 
-        Call<ResponseBody> call = substanceService.addSubstanceToPatient(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
-                    Log.e("SCC" , "Nashe");
+            Call<ResponseBody> call = substanceService.addSubstanceToPatient(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()){
+                        Log.e("SCC" , "Nashe");
+                    }
+                    Log.e("Fallo", String.valueOf(response.code()));
                 }
-                Log.e("Fallo", String.valueOf(response.code()));
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Error", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("Error", t.getMessage());
+                }
+            });
+        }
     }
 
     private void getListOfSubstances(View view, List<Substance> substances){
@@ -243,12 +280,15 @@ public class SubstancesFragment extends Fragment {
     }
 
 
-    private void createSubstance(View view, Editable name, Editable description, ArrayAdapter<Substance> substanceArrayAdapter){
+    private void createSubstance(View view, Editable name, Editable description, ArrayAdapter<Substance> substanceArrayAdapter, List<Substance> substances){
         SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Call<ResponseBody> call = substanceService.createSubstance(new Substance(name.toString(),description.toString()), sharedPreferences.getString("auth-token", ""));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                substanceArrayAdapter.notifyDataSetChanged();
+                substances.clear();
+                getListOfSubstances(view, substances);
                 substanceArrayAdapter.notifyDataSetChanged();
             }
 

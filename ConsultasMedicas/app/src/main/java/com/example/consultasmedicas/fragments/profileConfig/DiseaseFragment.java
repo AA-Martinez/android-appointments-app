@@ -88,26 +88,6 @@ public class DiseaseFragment extends Fragment {
         getSelectedAppUserConfig(view, selectedDiseases, arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
 
-        actDiseaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Disease disease = (Disease) adapterView.getItemAtPosition(i);
-                if (selectedDiseases.isEmpty()){
-                    selectedDiseases.add(disease);
-                    arrayAdapter.notifyDataSetChanged();
-                }else{
-                    if (selectedDiseases.contains(disease)){
-                        Toast.makeText(view.getContext(), "La enfermedad base ya se encuentra en la lista", Toast.LENGTH_SHORT).show();
-                    }else{
-                        selectedDiseases.add(disease);
-                        arrayAdapter.notifyDataSetChanged();
-                    }
-                }
-                actDiseaseList.setText("");
-                Log.e("OTCSYM", disease.getName()+ " " + disease.getId());
-            }
-        });
-
         fabAddNewDisease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +103,7 @@ public class DiseaseFragment extends Fragment {
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        createDisease(view, etAddName.getText(), etAddDescription.getText(), diseaseArrayAdapter);
+                        createDisease(view, etAddName.getText(), etAddDescription.getText(), diseaseArrayAdapter, diseases);
                         diseases.add(new Disease(etAddName.getText().toString(), etAddDescription.getText().toString()));
                         ArrayAdapter<Disease> diseaseArrayAdapter = new ArrayAdapter<Disease>(view.getContext(), android.R.layout.simple_list_item_1, diseases);
                         actDiseaseList.setAdapter(diseaseArrayAdapter);
@@ -169,7 +149,7 @@ public class DiseaseFragment extends Fragment {
                             for (int i = 0; i < patientDAO.getDiseases().size(); i++){
                                 selectedDiseases.add(patientDAO.getDiseases().get(i));
                                 arrayAdapter.notifyDataSetChanged();
-                                Log.e("All", String.valueOf(patientDAO.getAllergies().get(i).getName()));
+                                Log.e("All", String.valueOf(patientDAO.getDiseases().get(i).getName()));
                             }
                         }
 
@@ -177,6 +157,41 @@ public class DiseaseFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                actDiseaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Disease disease = (Disease) adapterView.getItemAtPosition(i);
+                        Boolean aBoolean = false;
+                        /*for (Allergy allergy1: selectedAllergies
+                             ) {
+                            Log.e("TEST", allergy1.getName());
+                        }*/
+                        Log.e("TEST", disease.getName());
+
+                        if (selectedDiseases.isEmpty()){
+                            Log.e("TEST", "dentro de vacio");
+                            selectedDiseases.add(disease);
+                            arrayAdapter.notifyDataSetChanged();
+                        }else{
+
+                            for (Disease diseaseOnList: selectedDiseases
+                            ) {
+                                if (diseaseOnList.getName().equals(disease.getName())){
+                                    Log.e("TEST", "dentro de existe");
+                                    Toast.makeText(view.getContext(), "La enfermedad base ya se encuentra en la lista", Toast.LENGTH_SHORT).show();
+                                    aBoolean = true;
+                                }
+                            }
+                            if(!aBoolean){
+                                Log.e("TEST", "dentro de no existe");
+                                selectedDiseases.add(disease);
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        actDiseaseList.setText("");
+                        Log.e("OTCSYM", disease.getName()+ " " + disease.getId());
+                    }
+                });
             }
 
             @Override
@@ -195,23 +210,25 @@ public class DiseaseFragment extends Fragment {
             UpdateResponse updateResponse = new UpdateResponse();
             updateResponse.setId(disease.getId());
             updateResponses.add(updateResponse);
+
+            Call<ResponseBody> call = diseaseService.addDiseaseToPatien(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()){
+                        Log.e("STATE" , "Nashe");
+                    }
+                    Log.e("Codigo", String.valueOf(response.code()));
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("Error", t.getMessage());
+                }
+            });
         }
 
-        Call<ResponseBody> call = diseaseService.addDiseaseToPatien(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
-                    Log.e("SCC" , "Nashe");
-                }
-                Log.e("Fallo", String.valueOf(response.code()));
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Error", t.getMessage());
-            }
-        });
     }
 
     private void getListOfDiseases(View view, List<Disease> diseases){
@@ -243,12 +260,15 @@ public class DiseaseFragment extends Fragment {
     }
 
 
-    private void createDisease(View view, Editable name, Editable description, ArrayAdapter<Disease> diseaseArrayAdapter){
+    private void createDisease(View view, Editable name, Editable description, ArrayAdapter<Disease> diseaseArrayAdapter, List<Disease> diseases){
         SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Call<ResponseBody> call = diseaseService.createDisease(new Disease(name.toString(),description.toString()), sharedPreferences.getString("auth-token", ""));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                diseaseArrayAdapter.notifyDataSetChanged();
+                diseases.clear();
+                getListOfDiseases(view, diseases);
                 diseaseArrayAdapter.notifyDataSetChanged();
             }
 

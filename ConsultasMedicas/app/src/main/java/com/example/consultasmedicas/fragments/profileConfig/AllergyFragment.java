@@ -112,8 +112,8 @@ public class AllergyFragment extends Fragment {
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        createAllergy(view, etAddName.getText(), etAddDescription.getText(), allergyArrayAdapter);
-                        allergies.add(new Allergy(etAddName.getText().toString(), etAddDescription.getText().toString()));
+                        createAllergy(view, etAddName.getText(), etAddDescription.getText(), allergyArrayAdapter, allergies);
+                        allergies.add(new Allergy(etAddName.getText().toString(),etAddDescription.getText().toString()));
                         ArrayAdapter<Allergy> allergyArrayAdapter = new ArrayAdapter<Allergy>(view.getContext(), android.R.layout.simple_list_item_1, allergies);
                         actAllergyList.setAdapter(allergyArrayAdapter);
                         allergyArrayAdapter.notifyDataSetChanged();
@@ -143,7 +143,6 @@ public class AllergyFragment extends Fragment {
     }
 
     private void getSelectedAppUserConfig(View view, List<Allergy> selectedAllergies, ArrayAdapter arrayAdapter){
-        //List<Allergy> pruebas = new ArrayList<>();
         Log.e("TEST", "Comienza la respuesta");
         Call<ResponseBody> call = patientService.getPatient("1",(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view)));
         call.enqueue(new Callback<ResponseBody>() {
@@ -158,11 +157,9 @@ public class AllergyFragment extends Fragment {
                             Toast.makeText(view.getContext(), "Sin enfermedades base", Toast.LENGTH_SHORT).show();
                         }else{
                             for (int i = 0; i < patientDAO.getAllergies().size(); i++){
-                                //pruebas.add(patientDAO.getAllergies().get(i));
                                 selectedAllergies.add(patientDAO.getAllergies().get(i));
                                 Log.e("TEST", "Se agrega datos");
                                 arrayAdapter.notifyDataSetChanged();
-                                //Log.e("All", String.valueOf(selectedAllergies.get(i).getName()));
                             }
                         }
 
@@ -232,7 +229,7 @@ public class AllergyFragment extends Fragment {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()){
-                        Log.e("SCC" , "Nashe");
+                        Log.e("SCC" , String.valueOf(updateResponse.getId()));
                     }
                     Log.e("Fallo", String.valueOf(response.code()));
                 }
@@ -275,12 +272,15 @@ public class AllergyFragment extends Fragment {
     }
 
 
-    private void createAllergy(View view, Editable name, Editable description, ArrayAdapter<Allergy> allergyArrayAdapter){
+    private void createAllergy(View view, Editable name, Editable description, ArrayAdapter<Allergy> allergyArrayAdapter, List<Allergy> allergies){
         SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Call<ResponseBody> call = allergyService.createAllergy(new Allergy(name.toString(),description.toString()), sharedPreferences.getString("auth-token", ""));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                allergyArrayAdapter.notifyDataSetChanged();
+                allergies.clear();
+                getListOfAllergies(view, allergies);
                 allergyArrayAdapter.notifyDataSetChanged();
             }
 

@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.consultasmedicas.R;
+import com.example.consultasmedicas.model.Allergy.Allergy;
 import com.example.consultasmedicas.model.Disease.Disease;
 import com.example.consultasmedicas.model.Medication.Medication;
 import com.example.consultasmedicas.model.Patient.PatientDAO;
@@ -88,26 +89,6 @@ public class MedicationsFragment extends Fragment {
         getSelectedAppUserConfig(view, selectedMedications, arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
 
-        actMedicationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Medication medication = (Medication) adapterView.getItemAtPosition(i);
-                if (selectedMedications.isEmpty()){
-                    selectedMedications.add(medication);
-                    arrayAdapter.notifyDataSetChanged();
-                }else{
-                    if (selectedMedications.contains(medication)){
-                        Toast.makeText(view.getContext(), "La medicacion ya se encuentra en la lista", Toast.LENGTH_SHORT).show();
-                    }else{
-                        selectedMedications.add(medication);
-                        arrayAdapter.notifyDataSetChanged();
-                    }
-                }
-                actMedicationList.setText("");
-                Log.e("OTCSYM", medication.getName()+ " " + medication.getId());
-            }
-        });
-
         fabAddNewMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +104,7 @@ public class MedicationsFragment extends Fragment {
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        createMedication(view, etAddName.getText(), etAddDescription.getText(), medicationArrayAdapter);
+                        createMedication(view, etAddName.getText(), etAddDescription.getText(), medicationArrayAdapter, medications);
                         medications.add(new Medication(etAddName.getText().toString(), etAddDescription.getText().toString()));
                         ArrayAdapter<Medication> medicationArrayAdapter = new ArrayAdapter<Medication>(view.getContext(), android.R.layout.simple_list_item_1, medications);
                         actMedicationList.setAdapter(medicationArrayAdapter);
@@ -177,6 +158,43 @@ public class MedicationsFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+
+                actMedicationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Medication medication = (Medication) adapterView.getItemAtPosition(i);
+                        Boolean aBoolean = false;
+                        /*for (Allergy allergy1: selectedAllergies
+                             ) {
+                            Log.e("TEST", allergy1.getName());
+                        }*/
+                        Log.e("TEST", medication.getName());
+
+                        if (selectedMedications.isEmpty()){
+                            Log.e("TEST", "dentro de vacio");
+                            selectedMedications.add(medication);
+                            arrayAdapter.notifyDataSetChanged();
+                        }else{
+
+                            for (Medication medicationOnList: selectedMedications
+                            ) {
+                                if (medicationOnList.getName().equals(medication.getName())){
+                                    Log.e("TEST", "dentro de existe");
+                                    Toast.makeText(view.getContext(), "La medicacion ya se encuentra en la lista", Toast.LENGTH_SHORT).show();
+                                    aBoolean = true;
+                                }
+                            }
+                            if(!aBoolean){
+                                Log.e("TEST", "dentro de no existe");
+                                selectedMedications.add(medication);
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        actMedicationList.setText("");
+                        Log.e("OTCSYM", medication.getName()+ " " + medication.getId());
+                    }
+                });
+
             }
 
             @Override
@@ -195,23 +213,25 @@ public class MedicationsFragment extends Fragment {
             UpdateResponse updateResponse = new UpdateResponse();
             updateResponse.setId(medication.getId());
             updateResponses.add(updateResponse);
+
+            Call<ResponseBody> call = medicationService.addMedicationToPatient(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()){
+                        Log.e("SCC" , "Nashe");
+                    }
+                    Log.e("Fallo", String.valueOf(response.code()));
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("Error", t.getMessage());
+                }
+            });
         }
 
-        Call<ResponseBody> call = medicationService.addMedicationToPatient(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
-                    Log.e("SCC" , "Nashe");
-                }
-                Log.e("Fallo", String.valueOf(response.code()));
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Error", t.getMessage());
-            }
-        });
     }
 
     private void getListOfMedications(View view, List<Medication> medications){
@@ -243,12 +263,15 @@ public class MedicationsFragment extends Fragment {
     }
 
 
-    private void createMedication(View view, Editable name, Editable description, ArrayAdapter<Medication> medicationArrayAdapter){
+    private void createMedication(View view, Editable name, Editable description, ArrayAdapter<Medication> medicationArrayAdapter, List<Medication> medications){
         SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Call<ResponseBody> call = medicationService.createMedication(new Medication(name.toString(),description.toString()), sharedPreferences.getString("auth-token", ""));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                medicationArrayAdapter.notifyDataSetChanged();
+                medications.clear();
+                getListOfMedications(view, medications);
                 medicationArrayAdapter.notifyDataSetChanged();
             }
 
