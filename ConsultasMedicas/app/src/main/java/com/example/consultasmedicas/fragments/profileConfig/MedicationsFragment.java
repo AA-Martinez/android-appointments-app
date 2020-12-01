@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.model.Disease.Disease;
 import com.example.consultasmedicas.model.Medication.Medication;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Medication.MedicationAdapter;
@@ -41,6 +40,7 @@ import retrofit2.Response;
 
 public class MedicationsFragment extends Fragment {
 
+    /*
     EditText etMedicationSeacher;
     RecyclerView rvMedicationList;
     MedicationAdapter medicationAdapter;
@@ -81,7 +81,7 @@ public class MedicationsFragment extends Fragment {
         medicationAdapter = new MedicationAdapter(view.getContext(), medications);
         rvMedicationList.setAdapter(medicationAdapter);
 
-        FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
+        FloatingActionButton fabAdd = view.findViewById(R.id.fabAddConfig);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,5 +169,5 @@ public class MedicationsFragment extends Fragment {
             }
         });
     }
-
+*/
 }

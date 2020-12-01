@@ -3,6 +3,7 @@ package com.example.consultasmedicas.model.Patient;
 
 import java.util.List;
 
+import com.example.consultasmedicas.model.Allergy.AllergyDAO;
 import com.example.consultasmedicas.model.AppUser.AppUser;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -32,7 +33,7 @@ public class PatientDAO {
     private List<Object> diseases = null;
     @SerializedName("allergies")
     @Expose
-    private List<Object> allergies = null;
+    private List<AllergyDAO> allergies;
     @SerializedName("medications")
     @Expose
     private List<Object> medications = null;
@@ -99,11 +100,11 @@ public class PatientDAO {
         this.diseases = diseases;
     }
 
-    public List<Object> getAllergies() {
+    public List<AllergyDAO> getAllergies() {
         return allergies;
     }
 
-    public void setAllergies(List<Object> allergies) {
+    public void setAllergies(List<AllergyDAO> allergies) {
         this.allergies = allergies;
     }
 

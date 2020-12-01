@@ -97,7 +97,6 @@ public class QuickAppointmentSymptomsFragment extends Fragment {
         fabConsult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
                 String diagnosisSym = "[";
                 int c = 0;
 
@@ -128,8 +127,8 @@ public class QuickAppointmentSymptomsFragment extends Fragment {
     }
 
     public void initComponents(View view){
-         actEditText = view.findViewById(R.id.actSearcherSymptom);
-         lvSelectedSymptoms = view.findViewById(R.id.lvSelectedItems);
-         fabConsult = view.findViewById(R.id.fabSaveSymptoms);
+         actEditText = view.findViewById(R.id.actSearcherConfig);
+         lvSelectedSymptoms = view.findViewById(R.id.lvSelectedItemsConfig);
+         fabConsult = view.findViewById(R.id.fabSaveConfig);
     }
 }

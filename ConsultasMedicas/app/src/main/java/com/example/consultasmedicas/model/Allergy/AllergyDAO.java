@@ -1,6 +1,8 @@
 
 package com.example.consultasmedicas.model.Allergy;
 
+import android.text.Editable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,6 +17,18 @@ public class AllergyDAO {
     @SerializedName("description")
     @Expose
     private String description;
+
+    public AllergyDAO(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public AllergyDAO(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
 
     public int getId() {
         return id;
@@ -40,4 +54,8 @@ public class AllergyDAO {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

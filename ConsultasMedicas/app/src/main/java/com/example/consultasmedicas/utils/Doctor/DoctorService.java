@@ -14,9 +14,6 @@ import retrofit2.http.Path;
 
 public interface DoctorService {
 
-    /*@GET("/doctor")
-    Call<ResponseBody> getDoctorList(@Header("Authorization") String authHeader);*/
-
     @GET("/doctor")
     Call<ResponseBody> getDoctorList(@Header("Authorization") String authHeader);
 

@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.model.Allergy.Allergy;
 import com.example.consultasmedicas.model.Substance.Substance;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Substance.SubstanceAdapter;
@@ -40,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SubstancesFragment extends Fragment {
-
+/*
     EditText etSubstanceSeacher;
     RecyclerView rvSubstanceList;
     SubstanceAdapter substanceAdapter;
@@ -80,7 +79,7 @@ public class SubstancesFragment extends Fragment {
         substanceAdapter = new SubstanceAdapter(view.getContext(), substances);
         rvSubstanceList.setAdapter(substanceAdapter);
 
-        FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
+        FloatingActionButton fabAdd = view.findViewById(R.id.fabAddConfig);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,4 +167,6 @@ public class SubstancesFragment extends Fragment {
             }
         });
     }
+
+ */
 }
