@@ -37,7 +37,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorView
 
     @Override
     public void onBindViewHolder(@NonNull DoctorViewHolder holder, int position) {
-        holder.tvDoctorName.setText(doctors.get(position).getAppUser().getFirstName() + " "+doctors.get(position).getAppUser().getLastName());
+        holder.tvDoctorName.setText("Dr. " + doctors.get(position).getAppUser().getFirstName() + " "+doctors.get(position).getAppUser().getLastName());
 
     }
 
@@ -56,7 +56,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorView
             super(itemView);
             this.onNoteListener = onNoteListener;
 
-            tvDoctorName = itemView.findViewById(R.id.doctor_listview_name);
+            tvDoctorName = itemView.findViewById(R.id.tvDoctorName);
             itemView.setOnClickListener(this);
         }
 

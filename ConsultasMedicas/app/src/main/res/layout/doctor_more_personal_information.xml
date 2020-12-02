@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DoctorPersonalInformationFragment">
+    tools:context=".fragments.DoctorMorePersonalInfo">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -99,11 +99,11 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbSeeMore"
+                android:id="@+id/mbBackMorePersonalInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Ver mas"
+                android:text="Volver"
                 app:layout_constraintBottom_toTopOf="@+id/btCreateAppointment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -144,83 +144,22 @@
             android:paddingRight="30dp"
             android:paddingBottom="10dp">
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/textView6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/phoneDoctorInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Numero de celular"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="37dp" />
-
-                <TextView
-                    android:id="@+id/emailDoctorInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Email"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:layout_editor_absoluteX="188dp"
-                    tools:layout_editor_absoluteY="75dp" />
-
-                <TextView
-                    android:id="@+id/cityDoctorInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Ciudad"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:layout_editor_absoluteX="188dp"
-                    tools:layout_editor_absoluteY="109dp" />
-
-                <TextView
-                    android:id="@+id/creationStampDoctorInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Creacion del usuario"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:layout_editor_absoluteX="183dp"
-                    tools:layout_editor_absoluteY="141dp" />
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="4dp"
-                android:text="Estudios:"
+                android:layout_marginBottom="8dp"
+                android:text="Trabajos:"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/rvSpecialities"
+                app:layout_constraintBottom_toTopOf="@+id/rvJobs"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSpecialities"
+                android:id="@+id/rvJobs"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"

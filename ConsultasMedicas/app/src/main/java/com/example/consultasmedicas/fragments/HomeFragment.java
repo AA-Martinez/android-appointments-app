@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -165,7 +164,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             ((Navigation) getActivity()).navigateTo(new SpecialtyFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (id == R.id.create_cons){
-            ((Navigation) getActivity()).navigateTo(new CreateConsultFragment(), true);
+            ((Navigation) getActivity()).navigateTo(new CreateAppointmentFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (id == R.id.my_consul){
             ((Navigation) getActivity()).navigateTo(new AppointmentFragment(), true);

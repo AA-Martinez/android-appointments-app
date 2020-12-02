@@ -55,7 +55,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             super(itemView);
             this.onNoteListener = onNoteListener;
 
-            tvAppointmentName = itemView.findViewById(R.id.doctor_listview_name);
+            tvAppointmentName = itemView.findViewById(R.id.tvDoctorName);
             itemView.setOnClickListener(this);
         }
 

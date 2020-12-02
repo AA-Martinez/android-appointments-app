@@ -36,17 +36,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SpecialtyFragment extends Fragment implements DegreeAdapter.OnNoteListener {
+
     RecyclerView rvSpecialtiesList;
     DegreeAdapter degreeAdapter;
     List<DegreeDAO> specialties;
     DegreeService degreeService = Apis.degreeService();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.degrees_fragment,container,false);
 
         rvSpecialtiesList = view.findViewById(R.id.rvDegreesList);
-        rvSpecialtiesList.setLayoutManager(new GridLayoutManager(view.getContext(),1));
+        rvSpecialtiesList.setLayoutManager(new GridLayoutManager(view.getContext(),2, GridLayoutManager.VERTICAL, false));
 
         specialties = new ArrayList<>();
         getSpecialtiesList(view);

@@ -53,7 +53,7 @@ public class DegreeAdapter extends RecyclerView.Adapter<DegreeAdapter.DegreeView
             super(itemView);
             this.onNoteListener = onNoteListener;
 
-            tvDegreeName = itemView.findViewById(R.id.degree_listview_name);
+            tvDegreeName = itemView.findViewById(R.id.tvSpeciality);
             itemView.setOnClickListener(this);
         }
 

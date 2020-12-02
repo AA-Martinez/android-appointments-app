@@ -55,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateConsultFragment extends Fragment{
+public class CreateAppointmentFragment extends Fragment{
     private AppointmentService appointmentService= Apis.appointmentService();
     private String authToken;
     private Appointment appointment;
