@@ -13,6 +13,7 @@ import retrofit2.http.Path;
 public interface AppointmentService {
     @POST("/appointment")
     Call<ResponseBody> createAppointment (@Body Appointment appointment, @Header("Authorization") String authHeader);
+
     @GET("/appointment/patient/{patientId}")
     Call<ResponseBody> getAppointmentList(@Path("patientId") String patientId, @Header("Authorization") String authHeader);
 }

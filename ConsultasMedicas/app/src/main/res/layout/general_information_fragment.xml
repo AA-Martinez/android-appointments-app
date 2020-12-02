@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.RegisterFragment">
+    tools:context=".fragments.profileConfig.GeneralInformationFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,15 +44,16 @@
 
             <!-- Nombre -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/first_name_text_input"
+                android:id="@+id/first_name_text_input_config"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                app:helperText="Nombre"
                 android:hint="@string/user_name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/first_name_edit_text"
+                    android:id="@+id/first_name_edit_text_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -62,15 +63,16 @@
 
             <!-- Apellido -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/last_name_text_input"
+                android:id="@+id/last_name_text_input_config"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                app:helperText="Apellido"
                 android:hint="@string/user_lastname">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/last_name_edit_text"
+                    android:id="@+id/last_name_edit_text_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -80,14 +82,16 @@
 
             <!-- Correo -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_text_input"
+                android:id="@+id/email_text_input_config"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                app:helperText="Correo"
+
                 android:hint="@string/user_email">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email_edit_text"
+                    android:id="@+id/email_edit_text_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -96,82 +100,21 @@
             <!-- end Correo -->
 
             <!-- Fecha de nacimiento -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/birth_date_text_input"
-                style="@style/Widget.App.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
-                app:helperTextEnabled="true"
-                app:helperText="@string/helper_birthdate"
-                android:hint="@string/user_birth">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/birth_date_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLines="2" />
-            </com.google.android.material.textfield.TextInputLayout>
             <!-- end Fecha de nacimiento -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!-- Edad -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/age_text_input"
-                    style="@style/Widget.App.TextInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    android:hint="@string/user_age">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/age_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <!-- end Edad -->
-
-                <!-- Género -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/genre_text_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    android:hint="@string/user_genre">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/genre_dropdown"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <!-- end Género -->
-
-            </LinearLayout>
 
             <!-- Celular -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phone_text_input"
+                android:id="@+id/phone_text_input_config"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                app:helperText="Celular"
+
                 android:hint="@string/user_cellphone">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/phone_edit_text"
+                    android:id="@+id/phone_edit_text_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -187,18 +130,20 @@
 
                 <!-- Peso -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/weight_text_input"
+                    android:id="@+id/weight_text_input_config"
                     style="@style/Widget.App.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="4dp"
+                    app:helperText="Peso"
+
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:hint="@string/user_weight">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/weight_edit_text"
+                        android:id="@+id/weight_edit_text_config"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -208,16 +153,18 @@
 
                 <!-- Altura -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/height_text_input"
+                    android:id="@+id/height_text_input_config"
                     style="@style/Widget.App.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="4dp"
+                    app:helperText="Altura"
+
                     android:hint="@string/user_height">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/height_edit_text"
+                        android:id="@+id/height_edit_text_config"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -229,15 +176,17 @@
 
             <!-- Direccion -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/address_text_input"
+                android:id="@+id/address_text_input_config"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                app:helperText="Direccion"
+
                 android:hint="@string/user_address">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/address_edit_text"
+                    android:id="@+id/address_edit_text_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -247,47 +196,32 @@
 
             <!-- Ciudad -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/city_text_input"
+                android:id="@+id/city_text_input_config"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                app:helperText="Ciudad"
+
                 android:layout_margin="4dp"
                 android:hint="@string/user_city">
 
                 <AutoCompleteTextView
-                    android:id="@+id/city_dropdown"
+                    android:id="@+id/city_dropdown_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!-- end Ciudad -->
 
-            <!-- Nacionalidad -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/birth_country_text_input"
-                style="@style/Widget.App.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:hint="@string/user_nationality">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/birth_country_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLines="2" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <!-- end Nacionalidad -->
-
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
                 android:layout_height="wrap_content">
 
                 <!-- Boton: Siguiente -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/next_button"
+                    android:id="@+id/next_button_config"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -297,7 +231,7 @@
 
                 <!-- Boton: Cancelar -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancel_button"
+                    android:id="@+id/cancel_button_config"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0){
-                    ((Navigation) getActivity()).navigateTo(new GeneralInformationFragment(), true);
+                    ((Navigation) getActivity()).navigateTo(new GeneralInformationFragment(), false);
                 }else if (i == 1){
                     ((Navigation) getActivity()).navigateTo(new DiseaseFragment(), true);
                 }else if (i == 2){
