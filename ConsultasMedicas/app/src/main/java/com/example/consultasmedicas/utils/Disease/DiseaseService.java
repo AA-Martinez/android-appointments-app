@@ -10,6 +10,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -25,4 +26,7 @@ public interface DiseaseService {
 
     @PUT("/patient/{appUserId}/disease")
     Call<ResponseBody> addDiseaseToPatien(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+
+    @HTTP(method = "DELETE", path = "/patient/{appUserId}/disease", hasBody = true)
+    Call<ResponseBody> deleteDiseaseToPatient(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 }

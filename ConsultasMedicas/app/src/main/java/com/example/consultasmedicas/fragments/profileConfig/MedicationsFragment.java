@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -128,6 +129,55 @@ public class MedicationsFragment extends Fragment {
             public void onClick(View view) {
                 saveListOfSelectedConfig(view, selectedMedications);
                 Toast.makeText(view.getContext(), "Se guardaron las configuraciones", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        lvSelectedMedications.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Medication medication = (Medication) adapterView.getItemAtPosition(i);
+                LayoutInflater inflater = LayoutInflater.from(view.getContext());
+                View subView = inflater.inflate(R.layout.confirmation_message_layout, null);
+                Log.v("long-clicked", medication.getName()+ " ID: " + medication.getId());
+                TextView tvConfirmation = (TextView) subView.findViewById(R.id.confirmation_message);
+                tvConfirmation.setText("¿Esta seguro de borrar " + medication.getName() + " de la lista?");
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setView(subView);
+                builder.setTitle("Mensaje de confirmacion");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        List<UpdateResponse> updateResponseUpdateResponse = new ArrayList<>();
+                        UpdateResponse updateResponse = new UpdateResponse();
+                        updateResponse.setId(medication.getId());
+                        updateResponseUpdateResponse.add(updateResponse);
+
+                        Call<ResponseBody> call = medicationService.deleteMedicationToPatient(1, updateResponseUpdateResponse, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+                        call.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                Log.e("Test","Code: " + response.code());
+                                selectedMedications.remove(medication);
+                                arrayAdapter.notifyDataSetChanged();
+                                updateResponseUpdateResponse.clear();
+                            }
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Log.e("ERROR", t.getMessage());
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        medicationArrayAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+                medicationArrayAdapter.notifyDataSetChanged();
+                return true;
             }
         });
 

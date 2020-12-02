@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -136,6 +137,60 @@ public class AllergyFragment extends Fragment {
             public void onClick(View view) {
                 saveListOfSelectedConfig(view, selectedAllergies);
                 Toast.makeText(view.getContext(), "Se guardaron las configuraciones", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        lvSelectedAllergies.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Allergy allergy = (Allergy) adapterView.getItemAtPosition(i);
+                LayoutInflater inflater = LayoutInflater.from(view.getContext());
+                View subView = inflater.inflate(R.layout.confirmation_message_layout, null);
+                Log.v("long-clicked", allergy.getName() + " ID: " + allergy.getId());
+                TextView tvConfirmation = (TextView) subView.findViewById(R.id.confirmation_message);
+                tvConfirmation.setText("¿Esta seguro de borrar " + allergy.getName() + " de la lista?");
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setView(subView);
+                builder.setTitle("Mensaje de confirmacion");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        List<UpdateResponse> updateResponseUpdateResponse = new ArrayList<>();
+                        UpdateResponse updateResponse = new UpdateResponse();
+                        updateResponse.setId(allergy.getId());
+                        updateResponseUpdateResponse.add(updateResponse);
+
+                        Call<ResponseBody> call = allergyService.deleteAllergyToPatient(1, updateResponseUpdateResponse, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+                        call.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (response.isSuccessful()) {
+                                    Log.e("Test","Code: " + response.code());
+                                    Log.e("Prueba","Tamano: " + updateResponseUpdateResponse.size());
+                                    Log.e("Prueba","Alergia: " + updateResponseUpdateResponse.get(0).getId());
+                                    Log.e("Prueba","Objeto Alergia: " + allergy.getId() + " " + allergy.getName());
+                                    selectedAllergies.remove(allergy);
+                                    arrayAdapter.notifyDataSetChanged();
+                                    updateResponseUpdateResponse.clear();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Log.e("ERROR", t.getMessage());
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        allergyArrayAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+                allergyArrayAdapter.notifyDataSetChanged();
+                return true;
             }
         });
 
