@@ -1,6 +1,7 @@
 package com.example.consultasmedicas.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.AppUser.AppUserDto;
 import com.example.consultasmedicas.utils.ApiMedic.ApiMedicService;
 import com.example.consultasmedicas.utils.Apis;
+import com.example.consultasmedicas.utils.CalendarService;
 import com.example.consultasmedicas.utils.Login.LoginService;
 import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.android.material.button.MaterialButton;
@@ -102,6 +104,9 @@ public class LoginFragment extends Fragment {
                         e.printStackTrace();
                     }
                     Headers headers = response.headers();
+
+                    Intent intent = new Intent(getActivity().getApplicationContext(), CalendarService.class);
+                    getActivity(). startService(intent);
 
                     SharedPreferencesUtils.SaveStringDataToSharedPreferences("auth-token", headers.get("Authorization"), view);
 
