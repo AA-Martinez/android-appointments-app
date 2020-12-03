@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +20,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
-import com.example.consultasmedicas.fragments.ProfileFragment;
 import com.example.consultasmedicas.model.Allergy.Allergy;
 import com.example.consultasmedicas.model.Patient.PatientDAO;
-import com.example.consultasmedicas.model.Symptom.Symptom;
 import com.example.consultasmedicas.model.UpdateResponse.UpdateResponse;
-import com.example.consultasmedicas.utils.Allergy.AllergyAdapter;
 import com.example.consultasmedicas.utils.Allergy.AllergyService;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Patient.PatientService;
@@ -40,7 +33,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -161,7 +153,7 @@ public class AllergyFragment extends Fragment {
                         updateResponse.setId(allergy.getId());
                         updateResponseUpdateResponse.add(updateResponse);
 
-                        Call<ResponseBody> call = allergyService.deleteAllergyToPatient(1, updateResponseUpdateResponse, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+                        Call<ResponseBody> call = allergyService.deleteAllergyToPatient(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("patient_id", view), updateResponseUpdateResponse, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -199,7 +191,7 @@ public class AllergyFragment extends Fragment {
 
     private void getSelectedAppUserConfig(View view, List<Allergy> selectedAllergies, ArrayAdapter arrayAdapter){
         Log.e("TEST", "Comienza la respuesta");
-        Call<ResponseBody> call = patientService.getPatient("1",(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view)));
+        Call<ResponseBody> call = patientService.getPatient(String.valueOf(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("appUserId", view)),(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view)));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -279,7 +271,7 @@ public class AllergyFragment extends Fragment {
             updateResponse.setId(allergyDAO.getId());
             updateResponses.add(updateResponse);
 
-            Call<ResponseBody> call = allergyService.addAllergyToPatien(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+            Call<ResponseBody> call = allergyService.addAllergyToPatient(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("patient_id", view), updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

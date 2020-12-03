@@ -29,9 +29,9 @@ public interface AllergyService {
     @POST("/allergy")
     Call<ResponseBody> createAllergy(@Body Allergy allergy, @Header("Authorization") String authHeader);
 
-    @PUT("/patient/{appUserId}/allergy")
-    Call<ResponseBody> addAllergyToPatien(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+    @PUT("/patient/{patientId}/allergy")
+    Call<ResponseBody> addAllergyToPatient(@Path("patientId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 
-    @HTTP(method = "DELETE", path = "/patient/{appUserId}/allergy", hasBody = true)
-    Call<ResponseBody> deleteAllergyToPatient(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+    @HTTP(method = "DELETE", path = "/patient/{patientId}/allergy", hasBody = true)
+    Call<ResponseBody> deleteAllergyToPatient(@Path("patientId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 }

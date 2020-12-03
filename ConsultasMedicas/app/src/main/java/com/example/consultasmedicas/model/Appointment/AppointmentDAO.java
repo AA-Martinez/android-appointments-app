@@ -2,6 +2,7 @@ package com.example.consultasmedicas.model.Appointment;
 
 import java.util.List;
 
+import com.example.consultasmedicas.model.Doctor.DoctorDAO;
 import com.example.consultasmedicas.model.Message.MessageDAO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -29,6 +30,17 @@ public class AppointmentDAO {
     @SerializedName("treatments")
     @Expose
     private List<Object> treatments = null;
+    @SerializedName("doctors")
+    @Expose
+    private List<DoctorDAO> doctors;
+
+    public List<DoctorDAO> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<DoctorDAO> doctors) {
+        this.doctors = doctors;
+    }
 
     public int getId() {
         return id;

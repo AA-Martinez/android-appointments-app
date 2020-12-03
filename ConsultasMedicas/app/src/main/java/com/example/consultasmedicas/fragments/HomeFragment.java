@@ -29,6 +29,7 @@ import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.Patient.PatientDAO;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Patient.PatientService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
@@ -80,7 +81,13 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
 
         byte[] decodedBytes = Base64.getDecoder().decode(jwtItems[1]);
         String decodedString = new String(decodedBytes);
+        String[] jwt = decodedString.split(":");
+        String[] jwt1 = jwt[2].split(",");
+        Log.e("Test", jwt1[0]);
 
+        SharedPreferencesUtils.SaveIntDataToSharedPreferences("appUserId", Integer.parseInt(jwt1[0]), view);
+
+        Log.e("APPUSERID", String.valueOf(sharedPreferences.getInt("appUserId", 0)));
 
         drawerLayout = view.findViewById(R.id.drawer_layout);
         navigationView = view.findViewById(R.id.navigation_view);
@@ -94,7 +101,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         navigationDrawer();
         decodeJwt();
 
-        Call<ResponseBody> call = patientService.getPatient("1",(sharedPreferences.getString("auth-token","")));
+        Call<ResponseBody> call = patientService.getPatient(String.valueOf(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("appUserId", view)),(sharedPreferences.getString("auth-token","")));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -106,14 +113,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
                         Log.d("RESPONSE", "onResponse: "+patientDAO.getAppUser().getFirstName()+" "+patientDAO.getAppUser().getLastName());
                         ciMenuTextView.setText(patientDAO.getAppUser().getCi());
                         nameMenuTextView.setText((patientDAO.getAppUser().getFirstName() + " " + patientDAO.getAppUser().getLastName()).toString());
-
-                        sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putInt("appUserId", patientDAO.getAppUser().getId());
-                        editor.apply();
-
-                        Log.e("APPUSERID", String.valueOf(sharedPreferences.getInt("appUserId", 0)));
-
+                        SharedPreferencesUtils.SaveIntDataToSharedPreferences("patient_id", patientDAO.getId(), view);
 
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();

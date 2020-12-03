@@ -22,8 +22,13 @@ import android.widget.TextView;
 import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
 import com.example.consultasmedicas.model.Appointment.Appointment;
+import com.example.consultasmedicas.model.Appointment.AppointmentDAO;
+import com.example.consultasmedicas.model.Doctor.Doctor;
+import com.example.consultasmedicas.model.Doctor.DoctorDAO;
 import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Appointment.AppointmentService;
+import com.example.consultasmedicas.utils.Doctor.DoctorService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,11 +41,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,13 +57,19 @@ import java.util.ListIterator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CreateAppointmentFragment extends Fragment{
+
     private AppointmentService appointmentService= Apis.appointmentService();
+    DoctorService doctorService = Apis.doctorService();
     private String authToken;
     private Appointment appointment;
     public static final int PICKFILE_RESULT_CODE = 1;
@@ -115,7 +128,7 @@ public class CreateAppointmentFragment extends Fragment{
             public void onClick(View view) {
 
                 appointment.setMessage(etSymptoms.getText().toString());
-                appointment.setPatientId("1");
+                appointment.setPatientId(String.valueOf(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("patient_id", view)));
 
                 Call<ResponseBody> call = appointmentService.createAppointment(appointment,authToken);
                 call.enqueue(new Callback<ResponseBody>() {
@@ -123,7 +136,21 @@ public class CreateAppointmentFragment extends Fragment{
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.isSuccessful()){
                             Log.d("APPOINTMENT", "onResponse: "+response.body().toString());
+                            try {
+                                Gson gson = new Gson();
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                AppointmentDAO appointmentDAO = gson.fromJson(jsonObject.getJSONObject("data").toString(), AppointmentDAO.class);
+                                SharedPreferencesUtils.SaveIntDataToSharedPreferences("id_appointment", appointmentDAO.getId(), view);
+                                if (SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("ComeFromPersonaInfo", view) == 1){
+                                    getDoctorAndPutOnAppointment(view, appointmentDAO);
+                                }
 
+                                Log.e("TEST", String.valueOf(appointmentDAO.getId()));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             if (!files.isEmpty()){
 
                                 for (int i = 0; i < files.size(); i++) {
@@ -186,12 +213,57 @@ public class CreateAppointmentFragment extends Fragment{
                     }
                 });
 
-                ((Navigation) getActivity()).navigateTo(new PaymentFragment(), true);
+                ((Navigation) getActivity()).navigateTo(new PaymentFragment(), false);
             }
         });
 
 
         return view;
+    }
+
+    public void getDoctorAndPutOnAppointment(View view, AppointmentDAO appointmentDAO){
+        List<DoctorDAO> doctorDAOS = new ArrayList<>();
+        Call<ResponseBody> call = doctorService.getDoctor(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("id_doctor", view), SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        DoctorDAO doctorDAO = gson.fromJson(jsonObject.getJSONObject("data").toString(), DoctorDAO.class);
+                        doctorDAOS.add(doctorDAO);
+                        putOnAppointment(view, appointmentDAO, doctorDAOS);
+                        Log.d("RESPONSE", "onResponse: "+doctorDAO.getAppUser().getFirstName()+" "+doctorDAO.getAppUser().getLastName());
+
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("TAG", t.getMessage());
+
+            }
+        });
+
+    }
+
+    public void putOnAppointment(View view, AppointmentDAO appointmentDAO, List<DoctorDAO> doctorDAO){
+        Call<ResponseBody> call = doctorService.putDoctorOnAppointment(appointmentDAO.getId(), doctorDAO, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.e("CODE", String.valueOf(response.code()));
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("ERROR", t.getMessage());
+            }
+        });
     }
 
     @Override

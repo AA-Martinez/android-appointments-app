@@ -132,59 +132,13 @@ public class ChatFragment extends Fragment {
                 message.setAppUserId(sharedPreferences.getInt("appUserId", 0));
                 message.setText(etChatMessage.getText().toString());
 
-                if (files != null){
-
-                    StorageReference filesRef = storageReference.child("images/" + files.getUri());
-                    Log.d("FILE URI", ""+files.getUri());
-                    UploadTask uploadTask = filesRef.putFile(files.getUri());
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                            Log.d("PROGRESS", "Upload is " + progress + "% done");
-                        }
-                    });
-
-                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                            if (!task.isSuccessful()) {
-                                throw task.getException();
-                            }
-
-                            // Continue with the task to get the download URL
-                            return filesRef.getDownloadUrl();
-                        }
-                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            if (task.isSuccessful()) {
-                                Uri downloadUri = task.getResult();
-                                Log.d("URL DOWNLOAD",downloadUri+"");
-                            } else {
-                                // Handle failures
-                                // ...
-                            }
-                        }
-                    });
-                }
                 FirebaseFirestore.getInstance().collection("messages").add(message);
                 Log.e("Prueba", String.valueOf(message.getCreationTimeStamp()));
                 etChatMessage.setText("");
             }
         });
 
-        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+        btnSendImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), FilePickerActivity.class);

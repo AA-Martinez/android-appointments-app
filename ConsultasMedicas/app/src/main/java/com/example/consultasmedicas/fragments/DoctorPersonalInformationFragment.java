@@ -119,7 +119,7 @@ public class DoctorPersonalInformationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((Navigation) getActivity()).navigateTo(new CreateAppointmentFragment(), true);
-
+                SharedPreferencesUtils.SaveIntDataToSharedPreferences("ComeFromPersonaInfo", 1, view);
             }
         });
 

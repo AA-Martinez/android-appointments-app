@@ -24,9 +24,9 @@ public interface SubstanceService {
     @POST("/substance")
     Call<ResponseBody> createSubstance(@Body Substance substance, @Header("Authorization") String authHeader);
 
-    @PUT("/patient/{appUserId}/substance")
-    Call<ResponseBody> addSubstanceToPatient(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+    @PUT("/patient/{patientId}/substance")
+    Call<ResponseBody> addSubstanceToPatient(@Path("patientId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 
-    @HTTP(method = "DELETE", path = "/patient/{appUserId}/substance", hasBody = true)
-    Call<ResponseBody> deleteSubstanceToPatient(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+    @HTTP(method = "DELETE", path = "/patient/{patientId}/substance", hasBody = true)
+    Call<ResponseBody> deleteSubstanceToPatient(@Path("patientId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 }

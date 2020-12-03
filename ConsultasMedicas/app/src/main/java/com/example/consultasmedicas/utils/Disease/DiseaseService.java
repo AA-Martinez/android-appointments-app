@@ -24,9 +24,9 @@ public interface DiseaseService {
     @POST("/disease")
     Call<ResponseBody> createDisease(@Body Disease disease, @Header("Authorization") String authHeader);
 
-    @PUT("/patient/{appUserId}/disease")
-    Call<ResponseBody> addDiseaseToPatien(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+    @PUT("/patient/{patientId}/disease")
+    Call<ResponseBody> addDiseaseToPatien(@Path("patientId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 
-    @HTTP(method = "DELETE", path = "/patient/{appUserId}/disease", hasBody = true)
-    Call<ResponseBody> deleteDiseaseToPatient(@Path("appUserId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
+    @HTTP(method = "DELETE", path = "/patient/{patientId}/disease", hasBody = true)
+    Call<ResponseBody> deleteDiseaseToPatient(@Path("patientId") int appUserId, @Body List<UpdateResponse> updateResponses, @Header("Authorization") String authHeader);
 }

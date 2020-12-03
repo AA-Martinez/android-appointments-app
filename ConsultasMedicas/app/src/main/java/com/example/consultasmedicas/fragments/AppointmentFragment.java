@@ -16,6 +16,7 @@ import com.example.consultasmedicas.utils.Apis;
 import com.example.consultasmedicas.utils.Appointment.AppointmentAdapter;
 import com.example.consultasmedicas.utils.Appointment.AppointmentService;
 import com.example.consultasmedicas.utils.Degree.DegreeAdapter;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -58,7 +59,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
 
     private void getAppointmentsList(View view) {
         SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        Call<ResponseBody> call = appointmentService.getAppointmentList("1",sharedPreferences.getString("auth-token", ""));
+        Call<ResponseBody> call = appointmentService.getAppointmentList(String.valueOf(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("patient_id", view)),sharedPreferences.getString("auth-token", ""));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

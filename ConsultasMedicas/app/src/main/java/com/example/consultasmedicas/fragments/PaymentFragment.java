@@ -28,8 +28,8 @@ public class PaymentFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(),"Accion realizada!",Toast.LENGTH_SHORT);
-                ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);
+                Toast.makeText(view.getContext(),"Accion realizada!",Toast.LENGTH_SHORT);
+                ((Navigation) getActivity()).navigateTo(new ChatFragment(), false);
             }
         });
 

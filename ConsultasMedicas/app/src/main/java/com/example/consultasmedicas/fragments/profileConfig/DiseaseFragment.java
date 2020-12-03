@@ -151,7 +151,7 @@ public class DiseaseFragment extends Fragment {
                         UpdateResponse updateResponse = new UpdateResponse();
                         updateResponse.setId(disease.getId());
                         updateResponseUpdateResponse.add(updateResponse);
-                        Call<ResponseBody> call = diseaseService.deleteDiseaseToPatient(1, updateResponseUpdateResponse, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+                        Call<ResponseBody> call = diseaseService.deleteDiseaseToPatient(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("patient_id", view), updateResponseUpdateResponse, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -183,7 +183,7 @@ public class DiseaseFragment extends Fragment {
     }
 
     private void getSelectedAppUserConfig(View view, List<Disease> selectedDiseases, ArrayAdapter arrayAdapter){
-        Call<ResponseBody> call = patientService.getPatient("1",(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view)));
+        Call<ResponseBody> call = patientService.getPatient(String.valueOf(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("appUserId", view)),(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token",view)));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -260,7 +260,7 @@ public class DiseaseFragment extends Fragment {
             updateResponse.setId(disease.getId());
             updateResponses.add(updateResponse);
 
-            Call<ResponseBody> call = diseaseService.addDiseaseToPatien(1, updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+            Call<ResponseBody> call = diseaseService.addDiseaseToPatien(SharedPreferencesUtils.RetrieveIntDataFromSharedPreferences("patient_id", view), updateResponses, SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
