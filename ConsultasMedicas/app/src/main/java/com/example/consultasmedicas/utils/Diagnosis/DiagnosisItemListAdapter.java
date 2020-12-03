@@ -1,28 +1,50 @@
 package com.example.consultasmedicas.utils.Diagnosis;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.consultasmedicas.Navigation;
 import com.example.consultasmedicas.R;
+import com.example.consultasmedicas.fragments.DoctorFragment;
+import com.example.consultasmedicas.model.Degree.DegreeDAO;
 import com.example.consultasmedicas.model.Diagnosis.Diagnosis;
 import com.example.consultasmedicas.model.Diagnosis.DiagnosisDAO;
 import com.example.consultasmedicas.model.Diagnosis.Specialisation;
+import com.example.consultasmedicas.utils.Apis;
+import com.example.consultasmedicas.utils.Degree.DegreeService;
+import com.example.consultasmedicas.utils.SharedPreferences.SharedPreferencesUtils;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DiagnosisItemListAdapter extends RecyclerView.Adapter<DiagnosisItemListAdapter.DiagnosisViewHolder> {
 
+    DegreeService degreeService = Apis.degreeService();
     Context context;
     List<DiagnosisDAO> diagnoses;
 
@@ -66,6 +88,60 @@ public class DiagnosisItemListAdapter extends RecyclerView.Adapter<DiagnosisItem
         ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, specialisations);
         holder.lvSpecialty.setAdapter(arrayAdapter);
 
+        holder.lvSpecialty.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                List<DegreeDAO> specialties = new ArrayList<>();
+                final String selected;
+                final boolean[] f = {false};
+                Call<ResponseBody> call = degreeService.getSpecialtyList(SharedPreferencesUtils.RetrieveStringDataFromSharedPreferences("auth-token", view));
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()){
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for(int i = 0; i<jsonArray.length(); i++){
+                                    Gson gson = new Gson();
+                                    DegreeDAO degreeDAO = gson.fromJson(jsonArray.getJSONObject(i).toString(),DegreeDAO.class);
+                                    specialties.add(degreeDAO);
+                                }
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        for (DegreeDAO degreeDAO: specialties
+                             ) {
+                            if (degreeDAO.getSpecialty().toLowerCase().equals(adapterView.getItemAtPosition(i).toString().toLowerCase())){
+                                f[0] = true;
+                            }
+                        }
+
+                        if (f[0]){
+                            SharedPreferencesUtils.SaveStringDataToSharedPreferences("selected_speciality", adapterView.getItemAtPosition(i).toString(), view);
+                            ((Navigation) context).navigateTo(new DoctorFragment(), true);
+
+
+                        }else{
+                            Toast.makeText(view.getContext(), "No tenemos registrados doctores con esa especializacion en el sistema", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+
+
+                Log.e("TEST", String.valueOf(adapterView.getItemAtPosition(i)));
+            }
+        });
     }
 
     @Override

@@ -160,8 +160,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageHolder>
             dateLayout = itemView.findViewById(R.id.dateLayout);
             date = itemView.findViewById(R.id.etdate);
 
-            easySlider = itemView.findViewById(R.id.esIdSliderOther);
-
             ivOtherMessage = itemView.findViewById(R.id.ivOtherMessage);
         }
     }
