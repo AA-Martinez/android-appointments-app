@@ -1,5 +1,7 @@
 package com.example.consultasmedicas.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ public class PaymentFragment extends Fragment {
                 ((Navigation) getActivity()).navigateTo(new HomeFragment(), true);
             }
         });
+
 
         return view;
     }

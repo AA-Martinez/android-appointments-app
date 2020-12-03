@@ -25,7 +25,7 @@ public class AppointmentDAO {
     private int status;
     @SerializedName("messages")
     @Expose
-    private List<MessageDAO> messages = null;
+    private List<MessageDAO> messages;
     @SerializedName("treatments")
     @Expose
     private List<Object> treatments = null;

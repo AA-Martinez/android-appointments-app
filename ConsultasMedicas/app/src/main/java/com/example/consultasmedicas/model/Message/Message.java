@@ -1,5 +1,7 @@
 package com.example.consultasmedicas.model.Message;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
@@ -35,6 +37,7 @@ public class Message {
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
+
 
     public Date getCreationTimeStamp() {
         return creationTimeStamp;

@@ -1,6 +1,7 @@
 package com.example.consultasmedicas.model.Appointment;
 
 public class Appointment {
+
     String message;
     String patientId;
 

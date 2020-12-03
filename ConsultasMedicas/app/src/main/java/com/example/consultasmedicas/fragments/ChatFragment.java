@@ -20,6 +20,7 @@ import com.example.consultasmedicas.utils.Chat.ChatAdapter;
 import com.example.consultasmedicas.utils.Doctor.DoctorService;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -77,12 +78,12 @@ public class ChatFragment extends Fragment {
 
         messages = new ArrayList<>();
         chatAdapter = new ChatAdapter(view.getContext(), messages);
+
         rvChatField.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
         rvChatField.setAdapter(chatAdapter);
         rvChatField.setHasFixedSize(true);
         rvChatField.getRecycledViewPool().setMaxRecycledViews(0, 0);
         sharedPreferences = view.getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-
         FirebaseFirestore.getInstance().collection("messages").orderBy("creationTimeStamp", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -107,6 +108,7 @@ public class ChatFragment extends Fragment {
                 message.setAppUserId(sharedPreferences.getInt("appUserId", 0));
                 message.setText(etChatMessage.getText().toString());
                 FirebaseFirestore.getInstance().collection("messages").add(message);
+                Log.e("Prueba", String.valueOf(message.getCreationTimeStamp()));
                 etChatMessage.setText("");
             }
         });

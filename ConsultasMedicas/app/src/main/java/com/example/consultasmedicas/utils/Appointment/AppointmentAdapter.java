@@ -31,13 +31,15 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.doctor_listview_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.appointment_listview_item, viewGroup, false);
         return new AppointmentAdapter.AppointmentViewHolder(v, mOnNoteListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
-        holder.tvAppointmentName.setText(appointments.get(position).getId()+" ");
+        holder.tvAppointmentName.setText(appointments.get(position).getMessages().get(0).getText());
+        holder.tvCreation.setText(appointments.get(position).getCreationTimeStamp());
+        holder.tvId.setText("ID consulta: " + appointments.get(position).getId());
     }
 
     @Override
@@ -49,13 +51,17 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public class AppointmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tvAppointmentName;
+        TextView tvId;
+        TextView tvCreation;
         OnNoteListener onNoteListener;
 
         public AppointmentViewHolder(@NonNull View itemView, OnNoteListener onNoteListener) {
             super(itemView);
             this.onNoteListener = onNoteListener;
+            tvId = itemView.findViewById(R.id.tvIdAppointment);
+            tvAppointmentName = itemView.findViewById(R.id.tvTextMessage);
+            tvCreation = itemView.findViewById(R.id.tvCreationStamp);
 
-            tvAppointmentName = itemView.findViewById(R.id.tvDoctorName);
             itemView.setOnClickListener(this);
         }
 

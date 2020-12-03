@@ -56,6 +56,8 @@ public class DoctorMorePersonalInfo extends Fragment {
 
         tvDoctorSpeciality = view.findViewById(R.id.tvSpecialtyDoctor);
         tvProfileName = view.findViewById(R.id.tvDoctorNameGeneralInfo);
+        rvJobs = view.findViewById(R.id.rvJobs);
+        mbCreateAppointment = view.findViewById(R.id.mbCreateAppointment);
 
         jobs = new ArrayList<>();
         jobAdapter = new JobAdapter(view.getContext(),jobs);
@@ -94,10 +96,11 @@ public class DoctorMorePersonalInfo extends Fragment {
             }
         });
 
-        mbBack.setOnClickListener(new View.OnClickListener() {
+
+        mbCreateAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Navigation) getActivity()).navigateTo(new DoctorMorePersonalInfo(), false);
+                ((Navigation) getActivity()).navigateTo(new CreateAppointmentFragment(), false);
             }
         });
 
