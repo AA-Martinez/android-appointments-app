@@ -69,8 +69,8 @@ public class CreateAppointmentFragment extends Fragment{
     private LinearLayout layout;
 
 
-    private ProgressDialog progressDialog;
     private ArrayList<MediaFile> files;
+    private ProgressDialog progressDialog;
     private StorageReference storageReference;
 
     @Override

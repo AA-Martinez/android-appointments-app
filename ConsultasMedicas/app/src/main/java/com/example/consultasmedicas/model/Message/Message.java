@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 public class Message {
 
@@ -13,6 +14,15 @@ public class Message {
     private int appointmentId;
     @ServerTimestamp
     private Date creationTimeStamp;
+    private List<String> files;
+
+    public List<String> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<String> files) {
+        this.files = files;
+    }
 
     public int getAppUserId() {
         return appUserId;

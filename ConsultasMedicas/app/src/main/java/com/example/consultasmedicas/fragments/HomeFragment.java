@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             ((Navigation) getActivity()).navigateTo(new AppointmentFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (id == R.id.quick_appointment){
-            ((Navigation) getActivity()).navigateTo(new QuickAppointmentSymptomsFragment(), true);
+            ((Navigation) getActivity()).navigateTo(new QuickAppointmentFragment(), true);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 
